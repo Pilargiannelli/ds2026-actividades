@@ -1,0 +1,139 @@
+body {
+    margin: 0;
+    background-color: #e6e3e0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #2c3e50;
+    height: 100%;
+}
+
+.container {
+    min-height: 80vh;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #130e0e;
+}
+
+.nav-inicio ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.nav-inicio li {
+    margin: 15px;
+}
+
+.nav-inicio a {
+    text-decoration: none;
+    color: rgb(33, 17, 17);
+    font-weight: 500;
+    transition: 0.4s;
+}
+
+.nav-inicio a:hover {
+    border-bottom: 2px solid #4e5029;
+    color: #27535d;
+}
+
+img {
+    margin: 20px auto;
+    width: 160px;
+    border-radius: 50%;
+    border: 3px solid #1f3c88;
+}
+
+#cv-inicio {
+    color: rgb(73, 53, 9);
+    text-align: center;
+}
+
+h1 {
+    color: #1f3c88;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 400;
+    color: #2c3e50;
+    margin-top: 25px;
+}
+
+h3 {
+    color: #8c9d55;
+    text-align: center;
+}
+
+p {
+    color: #e6e3e0;
+}
+
+#clickaqui {
+    color: #27535d;
+} 
+
+#clickaqui a {
+    color: #27535d;
+}
+
+#clickaqui a:hover {
+    color: #54415d;
+}
+
+section {
+    background-color: rgb(36, 27, 17);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+}
+
+.bloque {
+    margin-bottom: 10px;
+}
+
+.bloque p {
+    text-align: center;
+    color: #e6e3e0;
+}
+
+ul {
+    padding-left: 20px;
+    list-style: none;
+    color: #e6e3e0;
+}
+
+ol {
+    text-align: start;
+    color: #e6e3e0;
+}
+
+#ul-hobbies {
+    text-align: center;
+}
+
+.footer {
+    
+    text-align: center;
+    font-size: 14px;
+    color: #602121;
+    background-color: rgb(48, 36, 16);
+    padding: 30px;
+    margin-bottom: 0;
+}
+
+.p-footer {
+    color: #a9a67b;
+    font-size: 14px;
+}
+
+.titulos-int {
+    color: #8c9d55;
+    text-align: center;
+}
