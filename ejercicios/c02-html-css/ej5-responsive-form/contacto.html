@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV | Contacto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 id="cv-inicio">Contacto</h1>
+            <nav class="nav-inicio">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="estudios.html">Estudios</a></li>
+                    <li><a href="hobbies.html">Hobbies</a></li>
+                    <li><a href="experiencia.html">Experiencia</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="layout">
+                <section>
+                    <form>
+                        <div class="campo">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre"
+                                    placeholder="Tu nombre" required>
+                        </div>
+                        <div class="campo">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email"
+                                    placeholder="email@ejemplo.com" required>     
+                        </div>
+                        <div class="campo">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" name="password"
+                                minlength="6" required>
+                        </div>
+                        <div class="mensaje">
+                            <label for="mensaje">Mensaje:</label>
+                            <textarea id="mensaje" name="mensaje" rows="4"></textarea>                         
+                        </div>
+                        <div class="mensaje">
+                            <button type="submit">Enviar</button>
+                        </div>                     
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p class="p-footer">Desarrollo Web 2026</p>
+            <p id="clickaqui"><a href="https://www.linkedin.com/feed/" target="_blank">Click aquí</a></p>
+        </footer>
+    </div>
+</body>
+</html>
