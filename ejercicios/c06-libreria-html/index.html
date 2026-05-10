@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="Librería online con catálogo de libros, novedades y recomendaciones literarias.">
     <meta name="author" content="Cúspide Librería">
-
     <title>Inicio | Cúspide Librería</title>
 
-    <!-- Bootstrap CSS (CDN) -->
+    <!-- Bootstrap CSS -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -23,18 +21,18 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Estilos propios -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm sticky-top">
-        <div class="container">
 
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
+        <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
                 <i class="bi bi-book-half fs-4 me-2"></i>
                 <span>Cúspide</span>
             </a>
-
-            <!-- Manú hamburguesa (visible en móvil) -->
             <button
                 class="navbar-toggler"
                 type="button"
@@ -45,8 +43,6 @@
                 aria-label="Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Links colapsables -->
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -60,256 +56,202 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
-<main>
 
-    <!-- ============================================================
-     SECCIÓN 1 — PRESENTACIÓN (HERO con fondo animado)
-     ============================================================ -->
-<section class="hero text-white">
-    <!-- Capa de fondo animado: gradiente + blobs -->
-    <div class="hero__bg" aria-hidden="true">
-        <div class="hero__blob hero__blob--1"></div>
-        <div class="hero__blob hero__blob--2"></div>
-        <div class="hero__blob hero__blob--3"></div>
-    </div>
+    <main>
 
-    <div class="container hero__content text-center">
-        <p class="hero__eyebrow text-uppercase small fw-bold mb-3 letter-spaced">
-            Bienvenido a Cúspide
-        </p>
-        <h1 class="hero__title fw-bold mb-3">
-            Historias que iluminan tu camino
-        </h1>
-        <p class="hero__subtitle lead mb-4">
-            Descubrí miles de libros seleccionados con cuidado: novedades, clásicos
-            y las voces que están definiendo la literatura contemporánea.
-        </p>
-        <a href="catalogo.html" class="btn btn-light btn-lg px-4 fw-semibold">
-            <i class="bi bi-journal-bookmark me-2"></i>
-            Explorar el catálogo
-        </a>
-    </div>
-</section>
-
-
-    <!-- ============================================================
-         SECCIÓN 2 — LIBROS DESTACADOS
-         ============================================================ -->
-    <section class="featured py-5">
-        <div class="container">
-
-            <header class="text-center mb-5">
-                <p class="text-uppercase small fw-bold text-secondary mb-1 letter-spaced">
-                    Selección de la semana
-                </p>
-                <h2 class="fw-bold">Libros destacados</h2>
-                <p class="text-muted mx-auto" style="max-width: 540px;">
-                    Una curaduría hecha por nuestro equipo: títulos imprescindibles
-                    para empezar (o seguir) tu próxima lectura.
-                </p>
-            </header>
-
-            <div class="row g-4">
-
-                <!-- Libro 1 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book1/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro Memorias del bosque">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">Memorias del bosque</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Mariana Enríquez
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
+        <!-- SECCIÓN 1: HERO -->
+        <section class="hero">
+            <div class="hero__left">
+                <div class="hero__text-inner">
+                    <p class="hero__eyebrow">Tu próxima historia te espera</p>
+                    <h1 class="hero__title">
+                        Librería<br>
+                        <span>Cúspide</span>
+                    </h1>
+                    <p class="hero__subtitle">
+                        Explorá nuestra colección de libros cuidadosamente seleccionados:
+                        clásicos, novedades y los títulos que están definiendo
+                        la literatura de hoy.
+                    </p>
+                    <div class="hero__actions">
+                        <a href="catalogo.html" class="hero__link">
+                            Ver catálogo <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="contacto.html" class="hero__link hero__link--secondary">
+                            Contacto
+                        </a>
+                    </div>
                 </div>
-
-                <!-- Libro 2 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book2/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro La hora del lobo">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">La hora del lobo</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Samanta Schweblin
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Libro 3 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book3/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro El mapa de los sueños">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">El mapa de los sueños</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Jorge Luis Borges
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Libro 4 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book4/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro Cartas a un joven escritor">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">Cartas a un joven escritor</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Mario Vargas Llosa
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Libro 5 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book5/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro Rayuela">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">Rayuela</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Julio Cortázar
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Libro 6 -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <article class="card h-100 shadow-sm border-0 book-card">
-                        <img src="https://picsum.photos/seed/book6/600/800"
-                             class="card-img-top book-card__cover"
-                             alt="Portada del libro La uruguaya">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title fw-bold">La uruguaya</h3>
-                            <p class="card-text text-muted mb-3">
-                                <i class="bi bi-person-circle me-1"></i>
-                                Pedro Mairal
-                            </p>
-                            <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
-                        </div>
-                    </article>
-                </div>
-
             </div>
-        </div>
-    </section>
-
-
-    <!-- ============================================================
-         SECCIÓN 3 — FRASES (carrusel de citas literarias)
-         ============================================================ -->
-    <section class="quotes py-5">
-        <div class="container">
-
-            <header class="text-center mb-5">
-                <p class="text-uppercase small fw-bold text-secondary mb-1 letter-spaced">
-                    Palabras que perduran
-                </p>
-                <h2 class="fw-bold">Frases que nos inspiran</h2>
-            </header>
-
-            <div id="quotesCarousel" class="carousel slide carousel-fade quotes__carousel"
-                 data-bs-ride="carousel" data-bs-interval="6000">
-
-                <!-- Slides -->
-                <div class="carousel-inner text-center">
-
-                    <!-- Cita 1 -->
-                    <div class="carousel-item active">
-                        <figure class="quotes__figure mx-auto">
-                            <i class="bi bi-quote quotes__mark" aria-hidden="true"></i>
-                            <blockquote class="quotes__text">
-                                Un libro es un sueño que tienes en tus manos.
-                            </blockquote>
-                            <figcaption class="quotes__author">
-                                — Neil Gaiman
-                            </figcaption>
-                        </figure>
-                    </div>
-
-                    <!-- Cita 2 -->
-                    <div class="carousel-item">
-                        <figure class="quotes__figure mx-auto">
-                            <i class="bi bi-quote quotes__mark" aria-hidden="true"></i>
-                            <blockquote class="quotes__text">
-                                Siempre imaginé que el paraíso sería algún tipo de biblioteca.
-                            </blockquote>
-                            <figcaption class="quotes__author">
-                                — Jorge Luis Borges
-                            </figcaption>
-                        </figure>
-                    </div>
-
-                    <!-- Cita 3 -->
-                    <div class="carousel-item">
-                        <figure class="quotes__figure mx-auto">
-                            <i class="bi bi-quote quotes__mark" aria-hidden="true"></i>
-                            <blockquote class="quotes__text">
-                                La lectura es un acto de civilización; quizás el acto
-                                de civilización por excelencia.
-                            </blockquote>
-                            <figcaption class="quotes__author">
-                                — Octavio Paz
-                            </figcaption>
-                        </figure>
-                    </div>
-
-                </div>
-
-                <!-- Controles -->
-                <button class="carousel-control-prev" type="button"
-                        data-bs-target="#quotesCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button"
-                        data-bs-target="#quotesCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
-
-                <!-- Indicadores -->
-                <div class="carousel-indicators position-static mt-4">
-                    <button type="button" data-bs-target="#quotesCarousel"
-                            data-bs-slide-to="0" class="active"
-                            aria-current="true" aria-label="Cita 1"></button>
-                    <button type="button" data-bs-target="#quotesCarousel"
-                            data-bs-slide-to="1" aria-label="Cita 2"></button>
-                    <button type="button" data-bs-target="#quotesCarousel"
-                            data-bs-slide-to="2" aria-label="Cita 3"></button>
-                </div>
-
+            <div class="hero__right">
+                <img
+                    src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80"
+                    alt="Estantería de libros de Cúspide"
+                    class="hero__image">
             </div>
-        </div>
-    </section>
+        </section>
 
-</main>
+
+        <!-- SECCIÓN 2: SCROLL HORIZONTAL -->
+        <section class="books-scroll py-5">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <p class="books-scroll__label">Selección de la semana</p>
+                        <h2 class="books-scroll__title">En foco</h2>
+                    </div>
+                    <a href="catalogo.html" class="btn books-scroll__catalogue-btn">
+                        Ir al catálogo
+                    </a>
+                </div>
+            </div>
+            <div class="books-scroll__track"
+                role="region"
+                aria-label="Lista de libros deslizable horizontalmente"
+                tabindex="0">
+                <div class="books-scroll__spacer" aria-hidden="true"></div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/arca.jpg" alt="El arca de Noé" class="books-scroll__cover">
+                        <span class="books-scroll__badge">Novedad</span>
+                    </div>
+                    <p class="books-scroll__book-title">El arca de Noé</p>
+                    <p class="books-scroll__book-author">Beatriz Dourmec y Ayax Barnes</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/princ.webp" alt="El principito" class="books-scroll__cover">
+                        <span class="books-scroll__badge books-scroll__badge--available">Disponible</span>
+                    </div>
+                    <p class="books-scroll__book-title">El principito</p>
+                    <p class="books-scroll__book-author">Antoine de Saint-Exupéry</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/venado.jpg" alt="Los dias del venado" class="books-scroll__cover">
+                        <span class="books-scroll__badge">Novedad</span>
+                    </div>
+                    <p class="books-scroll__book-title">Los dias del venado (Saga confines 1)</p>
+                    <p class="books-scroll__book-author">Liliana Bodoc</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/rayuela.webp" alt="Rayuela" class="books-scroll__cover">
+                        <span class="books-scroll__badge books-scroll__badge--available">Disponible</span>
+                    </div>
+                    <p class="books-scroll__book-title">Rayuela</p>
+                    <p class="books-scroll__book-author">Julio Cortázar</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/hiroko.webp" alt="La cocina japonesa" class="books-scroll__cover">
+                        <span class="books-scroll__badge">Novedad</span>
+                    </div>
+                    <p class="books-scroll__book-title">La cocina japonesa</p>
+                    <p class="books-scroll__book-author">Hiroko Shimbo</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/faro.jpg" alt="El faro del fin del mundo" class="books-scroll__cover">
+                        <span class="books-scroll__badge books-scroll__badge--available">Disponible</span>
+                    </div>
+                    <p class="books-scroll__book-title">El faro del fin del mundo</p>
+                    <p class="books-scroll__book-author">Julio Verne</p>
+                </div>
+                <div class="books-scroll__item">
+                    <div class="books-scroll__cover-wrapper">
+                        <img src="img/felicidad.webp" alt="Felicidad conyugal" class="books-scroll__cover">
+                        <span class="books-scroll__badge">Novedad</span>
+                    </div>
+                    <p class="books-scroll__book-title">La felicidad conyugal</p>
+                    <p class="books-scroll__book-author">León Tolstoi</p>
+                </div>
+                <div class="books-scroll__spacer" aria-hidden="true"></div>
+            </div>
+            <p class="text-center text-muted small mt-2">
+                <i class="bi bi-arrow-left-right me-1"></i>
+                Deslizá para descubrir más títulos
+            </p>
+        </section>
+
+
+        <!-- SECCIÓN 3: GRILLA 6 CARDS -->
+        <section class="featured py-5 bg-light">
+            <div class="container">
+                <header class="text-center mb-5">
+                    <h2 class="fw-bold">Libros destacados</h2>
+                    <p class="text-muted">Títulos imprescindibles seleccionados por nuestro equipo.</p>
+                </header>
+                <div class="row g-4">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/tempestad_.jpg" class="card-img-top book-card__cover" alt="La tempestad">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">La tempestad</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>William Shakespeare</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/paris.webp" class="card-img-top book-card__cover" alt="Nuestra señora de París">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">Nuestra señora de París</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>Víctor Hugo</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/el-baile.webp" class="card-img-top book-card__cover" alt="El baile">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">El baile</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>Irene Némirovsky</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/busca.webp" class="card-img-top book-card__cover" alt="El hombre en busca de sentido">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">El hombre en busca de sentido</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>Viktor Frankl</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/bio.webp" class="card-img-top book-card__cover" alt="Biopausia">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">Biopausia</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>Gisela Gilges</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <article class="card h-100 shadow-sm border-0 book-card">
+                            <img src="img/juegos.jpg" class="card-img-top book-card__cover" alt="Amanecer en la cosecha">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">Amanecer en la cosecha</h5>
+                                <p class="card-text text-muted mb-3"><i class="bi bi-person me-1"></i>Suzanne Collins</p>
+                                <a href="libro.html" class="btn btn-outline-dark mt-auto">Ver más</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bootstrap JS -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
