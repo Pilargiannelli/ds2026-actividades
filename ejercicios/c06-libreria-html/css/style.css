@@ -209,3 +209,196 @@ clip-path: path(' M 120 0, C 60 120, 60 260, 120 380, C 180 500, 60 620, 120 740
     .hero__right { flex: none; height: 60vw; min-height: 260px; }
 }
 }
+
+/*4) Detalle de libro (libro.html)*/
+
+.book-detail {
+    background-color: #fafaf8;
+    min-height: calc(100vh - 60px);
+}
+
+/* Link "volver" estilo texto con flecha */
+.book-detail__back {
+    color: var(--color-brand);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: gap 0.2s;
+    gap: 0.25rem;
+}
+
+.book-detail__back:hover {
+    color: var(--color-brand-dark);
+    gap: 0.5rem;
+}
+
+/* Portada grande */
+.book-detail__cover-wrapper {
+    position: sticky;
+    top: 80px;               /* se queda fija mientras scrolleás el texto */
+}
+
+.book-detail__cover {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 8px 12px 32px rgba(0, 0, 0, 0.18);
+    display: block;
+}
+
+/* Eyebrow de género */
+.book-detail__genre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-brand);
+    margin-bottom: 0.75rem;
+}
+
+/* Título principal */
+.book-detail__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--color-brand-dark);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+/* Autor */
+.book-detail__author {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Lista de metadatos (editorial, año, páginas) */
+.book-detail__meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+}
+
+.book-detail__meta-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    display: block;
+}
+
+.book-detail__meta-value {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* Divisor */
+.book-detail__divider {
+    border-color: #e8e2d9;
+    margin: 1.75rem 0;
+}
+
+/* Título de sección (Sinopsis) */
+.book-detail__section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 0.75rem;
+}
+
+/* Descripción */
+.book-detail__description {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #444;
+}
+
+/* Bloque de precio y botones */
+.book-detail__purchase {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+}
+
+.book-detail__price-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-detail__price-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+}
+
+.book-detail__price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-brand-dark);
+    line-height: 1;
+}
+
+/* Botones de acción */
+.book-detail__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.book-detail__btn-buy {
+    background-color: var(--color-brand);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.book-detail__btn-buy:hover {
+    background-color: var(--color-brand-dark);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.book-detail__btn-back {
+    background-color: transparent;
+    color: var(--color-brand-dark);
+    border: 2px solid var(--color-brand-dark);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.book-detail__btn-back:hover {
+    background-color: var(--color-brand-dark);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Responsive: en móvil la imagen no es sticky */
+@media (max-width: 767px) {
+    .book-detail__cover-wrapper {
+        position: static;
+        max-width: 260px;
+        margin-inline: auto;
+    }
+
+    .book-detail__purchase {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
