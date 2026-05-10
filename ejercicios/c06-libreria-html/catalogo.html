@@ -5,33 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Catálogo completo de libros disponibles en Lumen Librería.">
+    <meta name="description" content="Catálogo completo de libros disponibles en Cúspide Librería.">
     <meta name="author" content="Cúspide Librería">
 
     <title>Catálogo | Cúspide Librería</title>
 
+    <!-- Bootstrap CSS -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossorigin="anonymous">
 
+    <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- Estilos propios -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
         <div class="container">
-
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
                 <i class="bi bi-book-half fs-4 me-2"></i>
                 <span>Cúspide</span>
             </a>
-
             <button
                 class="navbar-toggler"
                 type="button"
@@ -42,7 +44,6 @@
                 aria-label="Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -56,13 +57,81 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
+
+    <main>
+
+        <!-- ============================================================
+             HERO DEL CATÁLOGO
+             ============================================================ -->
+        <section class="catalogo__hero">
+            <div class="container">
+                <h1 class="catalogo__hero-title">Catálogo de libros</h1>
+                <p class="catalogo__hero-subtitle">
+                    Buscá entre miles de títulos de todo el mundo.
+                </p>
+
+                <!-- Buscador -->
+                <div class="catalogo__search">
+                    <div class="input-group input-group-lg catalogo__input-group">
+                        <span class="input-group-text catalogo__input-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input
+                            type="search"
+                            id="inputBusqueda"
+                            class="form-control catalogo__input"
+                            placeholder="Buscá por título, autor o género..."
+                            aria-label="Buscar libros">
+                        <button
+                            id="btnBuscar"
+                            class="btn catalogo__btn-search"
+                            type="button">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+            RESULTADOS
+        ============================================================ -->
+        <section class="catalogo__results py-5">
+            <div class="container">
+
+                <!-- Estado: cargando / error / vacío -->
+                <div id="estadoBusqueda"></div>
+
+                <!-- Grilla de resultados (se llena con JS) -->
+                <div id="resultados"></div>
+
+                <!-- Estado inicial (antes de buscar) -->
+                <div id="estadoInicial" class="catalogo__initial text-center py-5">
+                    <i class="bi bi-book catalogo__initial-icon"></i>
+                    <h2 class="catalogo__initial-title">¿Qué querés leer hoy?</h2>
+                    <p class="text-muted">
+                        Ingresá un título, autor o género en el buscador de arriba.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- Bootstrap JS -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <!-- Script propio: al final del body para que el DOM ya exista -->
+    <script src="js/data.js"></script>
 </body>
 </html>

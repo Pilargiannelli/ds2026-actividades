@@ -402,3 +402,105 @@ clip-path: path(' M 120 0, C 60 120, 60 260, 120 380, C 180 500, 60 620, 120 740
         gap: 1rem;
     }
 }
+
+/* ---------------------------------------------------------
+   9) Catálogo (catalogo.html)
+   --------------------------------------------------------- */
+
+/* Hero del catálogo */
+.catalogo__hero {
+    background-color: var(--color-brand-dark);
+    padding: 4rem 0 3rem;
+}
+
+.catalogo__hero-title {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.catalogo__hero-subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+/* Input group del buscador */
+.catalogo__input-group {
+    max-width: 680px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.catalogo__input-icon {
+    background: #fff;
+    border: none;
+    color: var(--color-brand);
+    font-size: 1.1rem;
+    padding-inline: 1rem;
+}
+
+.catalogo__input {
+    border: none;
+    border-left: 1px solid #eee;
+    font-size: 1rem;
+    padding: 0.85rem 1rem;
+}
+
+.catalogo__input:focus {
+    box-shadow: none;
+    border-color: #eee;
+}
+
+.catalogo__btn-search {
+    background-color: var(--color-brand);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    padding-inline: 2rem;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.catalogo__btn-search:hover {
+    background-color: #5a3819;
+    color: #fff;
+}
+
+/* Contador de resultados */
+.catalogo__results-count {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+/* Estado inicial (antes de buscar) */
+.catalogo__initial {
+    color: #bbb;
+}
+
+.catalogo__initial-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+    color: #ddd;
+}
+
+.catalogo__initial-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+/* Spinner con color de marca */
+.text-brand {
+    color: var(--color-brand) !important;
+}
+
+/* Ocultar estado inicial cuando hay resultados */
+.catalogo__results:has(#resultados:not(:empty)) #estadoInicial {
+    display: none;
+}
