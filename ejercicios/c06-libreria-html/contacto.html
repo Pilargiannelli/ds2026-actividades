@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="Contactanos: formulario, dirección y horarios de atención.">
     <meta name="author" content="Cúspide Librería">
-
     <title>Contacto | Cúspide Librería</title>
 
     <link
@@ -24,14 +22,13 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg bg- shadow-sm sticky-top">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
         <div class="container">
-
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
                 <i class="bi bi-book-half fs-4 me-2"></i>
                 <span>Cúspide</span>
             </a>
-
             <button
                 class="navbar-toggler"
                 type="button"
@@ -42,7 +39,6 @@
                 aria-label="Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -56,15 +52,244 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
+
+    <main>
+
+        <!--HERO del contacto-->
+        <section class="contact__hero">
+            <div class="container">
+                <h1 class="contact__hero-title">Contacto</h1>
+                <p class="contact__hero-subtitle">
+                    Estamos para ayudarte. Completá el formulario
+                    y te respondemos a la brevedad.
+                </p>
+            </div>
+        </section>
+
+
+        <!--CONTENIDO: info + formulario-->
+        <section class="contact__body py-5">
+            <div class="container">
+                <div class="row g-5">
+
+                    <!-- Columna izquierda: información de contacto -->
+                    <div class="col-12 col-lg-4">
+                        <div class="contact__info">
+
+                            <h2 class="contact__info-title">Información</h2>
+
+                            <ul class="contact__info-list">
+
+                                <li class="contact__info-item">
+                                    <span class="contact__info-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </span>
+                                    <div>
+                                        <strong>Dirección</strong>
+                                        <p>C. Cantilo 56<br>Buenos Aires, Argentina</p>
+                                    </div>
+                                </li>
+
+                                <li class="contact__info-item">
+                                    <span class="contact__info-icon">
+                                        <i class="bi bi-telephone"></i>
+                                    </span>
+                                    <div>
+                                        <strong>Teléfono</strong>
+                                        <p>221 123 4567</p>
+                                    </div>
+                                </li>
+
+                                <li class="contact__info-item">
+                                    <span class="contact__info-icon">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <div>
+                                        <strong>Email</strong>
+                                        <p>cuspide@gmail.com</p>
+                                    </div>
+                                </li>
+
+                                <li class="contact__info-item">
+                                    <span class="contact__info-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </span>
+                                    <div>
+                                        <strong>Horarios</strong>
+                                        <p>
+                                            Lunes a Viernes: 9:00 – 20:00<br>
+                                            Sábados: 10:00 – 18:00<br>
+                                            Domingos: cerrado
+                                        </p>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Columna derecha: formulario -->
+                    <div class="col-12 col-lg-8">
+                        <div class="contact__form-wrapper">
+
+                            <h2 class="contact__form-title">Envianos un mensaje</h2>
+
+                            <form
+                                id="formContacto"
+                                class="needs-validation"
+                                novalidate>
+
+                                <!-- Nombre -->
+                                <div class="mb-4">
+                                    <label for="nombre" class="form-label contact__label">
+                                        Nombre completo <span class="contact__required">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="nombre"
+                                        name="nombre"
+                                        class="form-control contact__input"
+                                        placeholder="Ej: Pilar Giannelli"
+                                        required
+                                        minlength="2">
+                                    <div class="invalid-feedback">
+                                        Por favor ingresá tu nombre completo.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        ¡Perfecto!
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="mb-4">
+                                    <label for="email" class="form-label contact__label">
+                                        Email <span class="contact__required">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        class="form-control contact__input"
+                                        placeholder="Ej: pilargiannelli@email.com"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Ingresá un email válido.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        ¡Perfecto!
+                                    </div>
+                                </div>
+
+                                <!-- Asunto (select) -->
+                                <div class="mb-4">
+                                    <label for="asunto" class="form-label contact__label">
+                                        Asunto <span class="contact__required">*</span>
+                                    </label>
+                                    <select
+                                        id="asunto"
+                                        name="asunto"
+                                        class="form-select contact__input"
+                                        required>
+                                        <option value="" selected disabled>
+                                            Seleccioná un asunto...
+                                        </option>
+                                        <option value="consulta">Consulta</option>
+                                        <option value="reclamo">Reclamo</option>
+                                        <option value="sugerencia">Sugerencia</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccioná un asunto.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        ¡Perfecto!
+                                    </div>
+                                </div>
+
+                                <!-- Mensaje -->
+                                <div class="mb-4">
+                                    <label for="mensaje" class="form-label contact__label">
+                                        Mensaje <span class="contact__required">*</span>
+                                    </label>
+                                    <textarea
+                                        id="mensaje"
+                                        name="mensaje"
+                                        class="form-control contact__input"
+                                        rows="5"
+                                        placeholder="Escribí tu mensaje aquí..."
+                                        required
+                                        minlength="10"></textarea>
+                                    <div class="invalid-feedback">
+                                        El mensaje debe tener al menos 10 caracteres.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        ¡Perfecto!
+                                    </div>
+                                </div>
+
+                                <!-- Nota de campos obligatorios -->
+                                <p class="contact__required-note">
+                                    <span class="contact__required">*</span>
+                                    Todos los campos son obligatorios.
+                                </p>
+
+                                <!-- Botón enviar -->
+                                <button
+                                    type="submit"
+                                    class="btn contact__btn-submit w-100">
+                                    <i class="bi bi-send me-2"></i>
+                                    Enviar mensaje
+                                </button>
+
+                                <!-- Mensaje de éxito (oculto hasta enviar) -->
+                                <div
+                                    id="mensajeExito"
+                                    class="alert alert-success mt-4 d-none"
+                                    role="alert">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    <strong>¡Mensaje enviado!</strong>
+                                    Te responderemos a la brevedad.
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
 
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script>
+        /* Validación Bootstrap: activa los estilos de feedback
+           al intentar enviar el formulario */
+        const form = document.getElementById('formContacto');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Activa las clases was-validated de Bootstrap
+            form.classList.add('was-validated');
+
+            // Si el formulario es válido, mostrar mensaje de éxito
+            if (form.checkValidity()) {
+                document.getElementById('mensajeExito').classList.remove('d-none');
+                form.reset();
+                form.classList.remove('was-validated');
+            }
+        });
+    </script>
+
 </body>
 </html>
