@@ -1,58 +1,30 @@
-import { useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { libroSchema } from "../schemas/libroSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { libroSchema, type LibroValidado } from "../schemas/libroSchema";
 import type { NuevoLibro } from "../types/libro";
 
 interface Props {
   agregarLibro: (libro: NuevoLibro) => void;
 }
 
-interface FormState {
-  titulo: string;
-  autor: string;
-  precio: string;
-  disponible: boolean;
-}
-
-interface Errores {
-  titulo?: string;
-  autor?: string;
-  precio?: string;
-}
-
-const initialForm: FormState = { titulo: "", autor: "", precio: "", disponible: true };
+type LibroFormInput = z.input<typeof libroSchema>;
 
 export default function LibroNuevo({ agregarLibro }: Props) {
-  const [form, setForm] = useState<FormState>(initialForm);
-  const [errores, setErrores] = useState<Errores>({});
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LibroFormInput, unknown, LibroValidado>({
+    resolver: zodResolver(libroSchema),
+    defaultValues: { titulo: "", autor: "", precio: 0, disponible: true },
+  });
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const resultado = libroSchema.safeParse(form);
-
-    if (!resultado.success) {
-      const nuevosErrores: Errores = {};
-      resultado.error.issues.forEach((issue) => {
-        const campo = issue.path[0] as keyof Errores;
-        nuevosErrores[campo] = issue.message;
-      });
-      setErrores(nuevosErrores);
-      return;
-    }
-
-    setErrores({});
-    agregarLibro(resultado.data);
+  const onSubmit = (data: LibroValidado) => {
+    agregarLibro(data);
     navigate("/catalogo");
   };
 
@@ -61,51 +33,27 @@ export default function LibroNuevo({ agregarLibro }: Props) {
       <div className="container" style={{ maxWidth: 640 }}>
         <h1 className="mb-4">Agregar libro</h1>
 
-        <Form noValidate onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mb-3" controlId="titulo">
             <Form.Label>Título</Form.Label>
-            <Form.Control
-              type="text"
-              name="titulo"
-              value={form.titulo}
-              onChange={handleChange}
-              isInvalid={!!errores.titulo}
-            />
-            <Form.Control.Feedback type="invalid">{errores.titulo}</Form.Control.Feedback>
+            <Form.Control type="text" isInvalid={!!errors.titulo} {...register("titulo")} />
+            <Form.Control.Feedback type="invalid">{errors.titulo?.message}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="autor">
             <Form.Label>Autor</Form.Label>
-            <Form.Control
-              type="text"
-              name="autor"
-              value={form.autor}
-              onChange={handleChange}
-              isInvalid={!!errores.autor}
-            />
-            <Form.Control.Feedback type="invalid">{errores.autor}</Form.Control.Feedback>
+            <Form.Control type="text" isInvalid={!!errors.autor} {...register("autor")} />
+            <Form.Control.Feedback type="invalid">{errors.autor?.message}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="precio">
             <Form.Label>Precio</Form.Label>
-            <Form.Control
-              type="number"
-              name="precio"
-              value={form.precio}
-              onChange={handleChange}
-              isInvalid={!!errores.precio}
-            />
-            <Form.Control.Feedback type="invalid">{errores.precio}</Form.Control.Feedback>
+            <Form.Control type="number" isInvalid={!!errors.precio} {...register("precio")} />
+            <Form.Control.Feedback type="invalid">{errors.precio?.message}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-4" controlId="disponible">
-            <Form.Check
-              type="checkbox"
-              name="disponible"
-              label="Disponible"
-              checked={form.disponible}
-              onChange={handleChange}
-            />
+            <Form.Check type="checkbox" label="Disponible" {...register("disponible")} />
           </Form.Group>
 
           <div className="d-flex gap-2">
