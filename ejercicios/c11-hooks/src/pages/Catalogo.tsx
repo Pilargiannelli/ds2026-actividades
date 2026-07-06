@@ -13,7 +13,10 @@ export default function Catalogo({ libros, loading, error }: Props) {
   const [termino, setTermino] = useState("");
 
   useEffect(() => {
-    document.title = "Catálogo | Cúspide Librería";
+    document.title = "Catálogo | Libreria - Pilar Giannelli";
+    return () => {
+      document.title = "Libreria - Pilar Giannelli";
+    };
   }, []);
 
   const resultados = useMemo(() => {
