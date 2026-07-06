@@ -14,9 +14,11 @@ export default function LibroDetalle({ libros, loading, error }: Props) {
   const libro = libros.find((l) => l.id === Number(id));
 
   useEffect(() => {
-    document.title = libro ? `${libro.titulo} | Cúspide Librería` : "Cúspide Librería";
+    document.title = libro
+      ? `${libro.titulo} | Libreria - Pilar Giannelli`
+      : "Libreria - Pilar Giannelli";
     return () => {
-      document.title = "Cúspide Librería";
+      document.title = "Libreria - Pilar Giannelli";
     };
   }, [libro]);
 
