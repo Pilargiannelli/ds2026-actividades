@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
+import { libroSchema } from "../schemas/libroSchema";
 import type { NuevoLibro } from "../types/libro";
 
 interface Props {
@@ -35,40 +36,23 @@ export default function LibroNuevo({ agregarLibro }: Props) {
     setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
-  const validar = (): Errores => {
-    const nuevosErrores: Errores = {};
-
-    if (form.titulo.trim().length < 2) {
-      nuevosErrores.titulo = "El título debe tener al menos 2 caracteres.";
-    }
-
-    if (form.autor.trim().length < 2) {
-      nuevosErrores.autor = "El autor debe tener al menos 2 caracteres.";
-    }
-
-    const precioNum = Number(form.precio);
-    if (!form.precio.trim() || Number.isNaN(precioNum) || precioNum <= 0) {
-      nuevosErrores.precio = "El precio debe ser un número mayor a 0.";
-    }
-
-    return nuevosErrores;
-  };
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const nuevosErrores = validar();
-    setErrores(nuevosErrores);
+    const resultado = libroSchema.safeParse(form);
 
-    if (Object.keys(nuevosErrores).length > 0) return;
+    if (!resultado.success) {
+      const nuevosErrores: Errores = {};
+      resultado.error.issues.forEach((issue) => {
+        const campo = issue.path[0] as keyof Errores;
+        nuevosErrores[campo] = issue.message;
+      });
+      setErrores(nuevosErrores);
+      return;
+    }
 
-    agregarLibro({
-      titulo: form.titulo.trim(),
-      autor: form.autor.trim(),
-      precio: Number(form.precio),
-      disponible: form.disponible,
-    });
-
+    setErrores({});
+    agregarLibro(resultado.data);
     navigate("/catalogo");
   };
 
