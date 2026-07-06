@@ -63,12 +63,7 @@ export default function Catalogo() {
               <div className="row g-4">
                 {resultados.map((libro) => (
                   <div className="col-12 col-sm-6 col-lg-4" key={libro.id}>
-                    <LibroCard
-                      id={libro.id}
-                      titulo={libro.titulo}
-                      autor={libro.autor}
-                      img={libro.img}
-                    />
+                    <LibroCard libro={libro} />
                   </div>
                 ))}
               </div>
