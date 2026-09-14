@@ -36,64 +36,6 @@
     max-width: 480px;
 }
 
-.hero__eyebrow {
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--color-brand);
-    margin-bottom: 0.75rem;
-}
-
-.hero__title {
-    font-size: 3rem;
-    font-weight: 800;
-    line-height: 1.1;
-    color: var(--color-text);
-    margin-bottom: 1.5rem;
-}
-
-.hero__title span {
-    color: var(--color-brand);
-}
-
-.hero__subtitle {
-    font-size: 1.05rem;
-    color: #5a5a5a;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-}
-
-.hero__actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.hero__link {
-    color: var(--color-brand);
-    text-decoration: none;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: color 0.2s, gap 0.2s;
-}
-
-.hero__link:hover {
-    color: var(--color-brand-dark);
-    gap: 0.6rem;
-}
-
-.hero__link--secondary {
-    color: var(--color-text);
-    font-weight: 600;
-}
-
-.hero__link--secondary:hover {
-    color: var(--color-brand-dark);
-}
-
 /* DERECHA */
 .hero__right {
     flex: 0 0 50%;
