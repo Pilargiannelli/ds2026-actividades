@@ -1,0 +1,232 @@
+@baseUrl = http://localhost:3002
+
+### Hello
+GET {{baseUrl}}/
+
+# ═══════════════════════════  CORS (Clase 19)  ═══════════════════════════
+# api.http no es un navegador: no aplica CORS. Estos casos sirven para
+# inspeccionar los headers que devuelve el server, no para reproducir el bloqueo.
+
+### Preflight: origen permitido → 204 con los Access-Control-*
+OPTIONS {{baseUrl}}/api/libros
+Origin: http://localhost:5173
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type,authorization
+
+### GET con origen permitido → trae Access-Control-Allow-Origin
+GET {{baseUrl}}/api/libros
+Origin: http://localhost:5173
+
+### GET con origen NO permitido → 200 pero SIN Access-Control-Allow-Origin
+# (esto es lo que el navegador usa para bloquear la respuesta)
+GET {{baseUrl}}/api/libros
+Origin: http://localhost:6000
+
+### 404 en JSON, no HTML (Clase 19, punto 9)
+GET {{baseUrl}}/api/ruta-que-no-existe
+
+# ═══════════════════════════  AUTENTICACIÓN  ═══════════════════════════
+# Los doce casos de la matriz de permisos (Clase 18, Paso 12)
+
+### 1) POST /auth/registro → 201 sin passwordHash en la respuesta
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026" }
+
+### 2) POST /auth/registro mismo email → 409
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026" }
+
+### 3) POST /auth/registro password "corta" → 400 con los 3 errores del password
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "Bruno", "email": "bruno@libreria.test", "password": "abc" }
+
+### 4) POST /auth/login mail que no existe → 401 "Credenciales inválidas"
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "noexiste@libreria.test", "password": "Libreria2026" }
+
+### 5) POST /auth/login password mal → 401 el mismo mensaje
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "ana@libreria.test", "password": "otraCosa123" }
+
+### 6) POST /auth/login correcto (CLIENTE, del seed) → 200 con token
+# @name loginCliente
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "cliente@libreria.test", "password": "Cliente1234" }
+
+### login ADMIN (del seed) → 200 con token
+# @name loginAdmin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@libreria.test", "password": "Admin1234" }
+
+### Tokens capturados de las respuestas anteriores
+@tokenCliente = {{loginCliente.response.body.token}}
+@tokenAdmin = {{loginAdmin.response.body.token}}
+
+### 7) GET /auth/yo sin header → 401
+GET {{baseUrl}}/api/auth/yo
+
+### 8) GET /auth/yo con token de CLIENTE → 200
+GET {{baseUrl}}/api/auth/yo
+Authorization: Bearer {{tokenCliente}}
+
+### 9) POST /api/libros sin header → 401
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{ "titulo": "Sin permiso", "precio": 1000, "imagen": "/img/x.webp", "autorId": 1 }
+
+### 10) POST /api/libros con token de CLIENTE → 403
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenCliente}}
+Content-Type: application/json
+
+{ "titulo": "Tampoco con cliente", "precio": 1000, "imagen": "/img/x.webp", "autorId": 1 }
+
+### 11) POST /api/libros con token de ADMIN → 201
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{ "titulo": "Con permiso de admin", "precio": 8700, "imagen": "/img/x.webp", "autorId": 1 }
+
+### 12) GET /api/libros sin header → 200, es público
+GET {{baseUrl}}/api/libros
+
+# ─────────────────────────────  CAMINO FELIZ  ─────────────────────────────
+
+### Listar libros (cada uno con su autor)
+GET {{baseUrl}}/api/libros
+
+### Sólo los libros disponibles
+GET {{baseUrl}}/api/libros?disponible=true
+
+### Un libro (detalle: autor + categorías)
+GET {{baseUrl}}/api/libros/1
+
+### Crear un libro (requiere ADMIN)
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "titulo": "El túnel",
+  "precio": 8700,
+  "imagen": "/img/tunel.webp",
+  "autorId": 4
+}
+
+### Editar un libro (parcial: sólo el precio) (requiere ADMIN)
+PUT {{baseUrl}}/api/libros/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "precio": 6900
+}
+
+### Borrar un libro (requiere ADMIN)
+DELETE {{baseUrl}}/api/libros/7
+Authorization: Bearer {{tokenAdmin}}
+
+### Listar autores
+GET {{baseUrl}}/api/autores
+
+### Un autor (con todos sus libros)
+GET {{baseUrl}}/api/autores/2
+
+### Crear un autor (requiere ADMIN)
+POST {{baseUrl}}/api/autores
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "nombre": "Ernesto Sabato",
+  "nacionalidad": "Argentina"
+}
+
+# ─────────────────────────────  CASOS DE ERROR  ─────────────────────────────
+
+### 400 - POST sin título (falla la forma → Zod). Con ADMIN, para probar validate y no authorize
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "precio": 5000,
+  "imagen": "/img/x.webp",
+  "autorId": 1
+}
+
+### 400 - precio negativo
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "titulo": "Te pago por comprarlo",
+  "precio": -500,
+  "imagen": "/img/x.webp",
+  "autorId": 1
+}
+
+### 400 - id inválido (abc no es un id, es un 400 - no un 404)
+GET {{baseUrl}}/api/libros/abc
+
+### 400 - id negativo
+GET {{baseUrl}}/api/libros/-5
+
+### 404 - un libro que no existe (la ruta existe, el libro no)
+GET {{baseUrl}}/api/libros/9999
+
+### 404 - actualizar un libro que no existe (Prisma P2025)
+PUT {{baseUrl}}/api/libros/9999
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "precio": 1000
+}
+
+### 404 - borrar un libro que no existe (Prisma P2025)
+DELETE {{baseUrl}}/api/libros/9999
+Authorization: Bearer {{tokenAdmin}}
+
+### 409 - autor duplicado (viola @unique → Prisma P2002)
+POST {{baseUrl}}/api/autores
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "nombre": "Julio Cortázar",
+  "nacionalidad": "Argentina"
+}
+
+### 409 - borrar un autor que tiene libros (onDelete: Restrict → Prisma P2003)
+DELETE {{baseUrl}}/api/autores/2
+Authorization: Bearer {{tokenAdmin}}
+
+### 409 - crear un libro con un autorId inexistente (viola la FK → Prisma P2003)
+POST {{baseUrl}}/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "titulo": "Huérfano",
+  "precio": 5000,
+  "imagen": "/img/x.webp",
+  "autorId": 9999
+}
