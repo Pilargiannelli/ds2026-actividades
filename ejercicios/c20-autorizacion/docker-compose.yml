@@ -1,0 +1,32 @@
+services:
+  api:
+    build: ./backend
+    ports:
+      # host:contenedor — el host usa 3003/5558 para no chocar con otros proyectos
+      - "3003:3000"
+      - "5558:5555"
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
+      - ./backend/prisma.config.ts:/app/prisma.config.ts
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5435:5432"
+    env_file:
+      - backend/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:
