@@ -2,11 +2,11 @@ import { prisma } from "../config/prisma";
 import { LibroConAutor, LibroDetalle } from "../types/libro.types";
 import { LibroCreate, LibroUpdate } from "../validations/libro.validation";
 
-// Listado: cada libro con su autor, en una sola consulta.
+// Listado: cada libro con su autor y sus categorías (el front arma un estante por categoría).
 export async function findAll(disponible?: boolean): Promise<LibroConAutor[]> {
   return prisma.libro.findMany({
     where: disponible === undefined ? {} : { disponible },
-    include: { autor: true },
+    include: { autor: true, categorias: { orderBy: { orden: "asc" } } },
     orderBy: { id: "asc" },
   });
 }

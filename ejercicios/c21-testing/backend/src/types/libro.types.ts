@@ -5,8 +5,8 @@ import { Prisma } from "../generated/prisma/client";
 export type { LibroModel as Libro } from "../generated/prisma/models";
 export type { CategoriaModel as Categoria } from "../generated/prisma/models";
 
-// El listado: cada libro con su autor.
-export type LibroConAutor = Prisma.LibroGetPayload<{ include: { autor: true } }>;
+// El listado: cada libro con su autor y sus categorías.
+export type LibroConAutor = Prisma.LibroGetPayload<{ include: { autor: true; categorias: true } }>;
 
 // El detalle: el autor Y las categorías.
 export type LibroDetalle = Prisma.LibroGetPayload<{
