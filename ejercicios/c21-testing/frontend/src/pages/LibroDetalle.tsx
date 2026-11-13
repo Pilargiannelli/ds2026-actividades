@@ -93,8 +93,17 @@ export default function LibroDetalle({ libros, loading, error }: Props) {
 
             <p className="book-detail__author">
               <i className="bi bi-person me-1"></i>
-              {libro.autor.nombre} ({libro.autor.nacionalidad})
+              {libro.autor.nombre}
+              {libro.autor.nacionalidad && ` (${libro.autor.nacionalidad})`}
             </p>
+
+            {(libro.editorial || libro.anio) && (
+              <p className="book-detail__author">
+                Primera edición: {[libro.editorial, libro.anio].filter(Boolean).join(", ")}
+              </p>
+            )}
+
+            {libro.descripcion && <p className="book-detail__description">{libro.descripcion}</p>}
 
             <p className="book-detail__author">
               <span className="fw-bold">{formatearPrecio(libro.precio)}</span>{" "}

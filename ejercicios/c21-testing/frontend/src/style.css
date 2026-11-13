@@ -3,6 +3,31 @@
     --color-brand-navbar: #4a2f18;
     --color-brand-dark:   #1f3a2d;
     --color-text:         #2c2c2c;
+
+    /* Paleta editorial (biblioteca y sus fichas): marrón, verde oliva y gris topo sobre
+       marfil. Contrastes medidos sobre --color-fondo (WCAG): marrón 10:1, tinta 13:1,
+       oliva 4,7:1, topo-texto 5:1. El topo puro (3,2:1) es solo para bordes e íconos. */
+    --color-marron:       #49382F;
+    --color-marron-tinta: #33271F; /* texto de lectura */
+    --color-oliva:        #66715B;
+    --color-oliva-oscuro: #545E4A; /* texto oliva sobre marfil, hover */
+    --color-topo:         #93877D; /* bordes, íconos, filetes */
+    --color-topo-texto:   #72665C; /* metadatos y textos secundarios */
+    --color-marfil:       #EAE5DC;
+    --color-crema:        #F1ECE3;
+    --color-fondo:        #F6F3ED;
+    --color-papel:        #FBF8F2;
+    --color-linea:        #DDD5C8;
+
+    /* Acentos por categoría: variaciones apagadas de la misma identidad. Todos dan
+       ≥ 4,5:1 con texto papel encima (chip seleccionado) y sobre el fondo. */
+    --color-terracota:    #A65A3F;
+    --color-marron-calido:#7A5440;
+    --color-marron-claro: #8A6448;
+    --color-salvia:       #5E6B57;
+    --color-topo-oscuro:  #6E6359;
+    --color-malva:        #86605F;
+    --color-ocre:         #7F6A35;
 }
 
 .navbar {
@@ -150,23 +175,6 @@
     color: var(--color-brand);
     margin-bottom: 0;
 }
-/* CARDS */
-.book-card {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    overflow: hidden;
-    border-radius: 0.75rem !important;
-}
-.book-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 1rem 2rem rgba(0,0,0,0.12) !important;
-}
-.book-card__cover {
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-.book-card:hover .book-card__cover { transform: scale(1.04); }
-
 /* RESPONSIVE */
 @media (max-width: 991px) {
     .hero { flex-direction: column; min-height: auto; }
@@ -369,95 +377,90 @@
 }
 
 /* ---------------------------------------------------------
-   9) Catálogo (catalogo.html)
+   9) Catálogo — encabezado editorial del estante
+   (el estante vive en components/Estante/estante.css)
    --------------------------------------------------------- */
 
-/* Hero del catálogo */
-.catalogo__hero {
-    background-color: var(--color-brand-dark);
-    padding: 4rem 0 3rem;
+.coleccion {
+    /* Fondo cálido con una trama de papel casi imperceptible (SVG de ruido, 1 KB,
+       se dibuja una sola vez y no compite con los libros). */
+    background-color: var(--color-fondo);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .29 0 0 0 0 .22 0 0 0 0 .18 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    color: var(--color-marron-tinta);
+    min-height: calc(100vh - 60px);
+    padding-bottom: 5rem;
 }
 
-.catalogo__hero-title {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 0.5rem;
+.coleccion__cabecera {
+    padding-top: clamp(2.75rem, 6vw, 5rem);
 }
 
-.catalogo__hero-subtitle {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 1.05rem;
-    margin-bottom: 2rem;
+/* Inspiración: el título es el protagonista de la sección. */
+.coleccion__titulo {
+    max-width: 14ch;
+    margin: 0;
+    font-family: var(--ed-serif);
+    font-size: clamp(2.6rem, 7.2vw, 5.6rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--color-marron);
+    text-wrap: balance;
 }
 
-/* Input group del buscador */
-.catalogo__input-group {
-    max-width: 680px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    overflow: hidden;
+.coleccion__bajada {
+    max-width: 36rem;
+    margin: 1.15rem 0 0;
+    font-family: var(--ed-serif);
+    font-size: clamp(1.1rem, 1.7vw, 1.3rem);
+    line-height: 1.55;
+    color: var(--color-topo-texto);
+    text-wrap: pretty;
 }
 
-.catalogo__input-icon {
-    background: #fff;
-    border: none;
-    color: var(--color-brand);
-    font-size: 1.1rem;
-    padding-inline: 1rem;
+/* Descubrimiento: la instrucción antes de los estantes, con un ícono de libro abierto. */
+.coleccion__instruccion {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.6rem 0 0;
+    font-family: var(--ed-serif);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    font-style: italic;
+    color: var(--color-oliva-oscuro);
 }
 
-.catalogo__input {
-    border: none;
-    border-left: 1px solid #eee;
-    font-size: 1rem;
-    padding: 0.85rem 1rem;
+.coleccion__instruccion-icono {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-oliva) 13%, transparent);
+    color: var(--color-oliva);
 }
 
-.catalogo__input:focus {
-    box-shadow: none;
-    border-color: #eee;
+/* Mientras se aplican filtros/búsqueda, los estantes se atenúan apenas. */
+.coleccion__resultados {
+    transition: opacity 0.18s ease;
 }
 
-.catalogo__btn-search {
-    background-color: var(--color-brand);
-    color: #fff;
-    border: none;
-    font-weight: 700;
-    padding-inline: 2rem;
-    font-size: 1rem;
-    transition: background 0.2s;
+.coleccion__resultados[data-actualizando] {
+    opacity: 0.55;
 }
 
-.catalogo__btn-search:hover {
-    background-color: #5a3819;
-    color: #fff;
+.coleccion__estado {
+    padding: 5rem 1rem;
+    text-align: center;
+    font-family: var(--ed-serif);
+    color: var(--color-topo-texto);
 }
 
-/* Contador de resultados */
-.catalogo__results-count {
-    color: #666;
-    font-size: 0.95rem;
-    margin-bottom: 0;
-}
-
-/* Estado inicial (antes de buscar) */
-.catalogo__initial {
-    color: #bbb;
-}
-
-.catalogo__initial-icon {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 1rem;
-    color: #ddd;
-}
-
-.catalogo__initial-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #aaa;
-    margin-bottom: 0.5rem;
+.coleccion__vacio-titulo {
+    font-size: 1.6rem;
+    color: var(--color-marron);
+    margin-bottom: 0.25rem;
 }
 
 /* Spinner con color de marca */
@@ -465,10 +468,6 @@
     color: var(--color-brand) !important;
 }
 
-/* Ocultar estado inicial cuando hay resultados */
-.catalogo__results:has(#resultados:not(:empty)) #estadoInicial {
-    display: none;
-}
 
 /*Formulario de contacto */
 

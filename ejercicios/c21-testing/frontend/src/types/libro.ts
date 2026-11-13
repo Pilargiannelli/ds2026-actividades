@@ -3,24 +3,29 @@
 export interface Autor {
   id: number;
   nombre: string;
-  nacionalidad: string;
+  nacionalidad: string | null; // null = no verificada
 }
 
 export interface Categoria {
   id: number;
   nombre: string;
+  orden?: number | null; // con orden = la categoría es un estante del catálogo
 }
 
-// Lo que devuelve GET /api/libros (lista): el autor, sin categorías.
+// Lo que devuelve GET /api/libros: el autor y las categorías (ordenadas por orden).
 export interface Libro {
   id: number;
   titulo: string;
   precio: number;
-  imagen: string;
+  imagen: string | null; // null = sin portada real (se muestra una provisional)
   disponible: boolean;
+  anio?: number | null; // año de la primera edición
+  editorial?: string | null; // editorial de la primera edición
+  descripcion?: string | null;
+  generos?: string[]; // géneros o subgéneros dentro de la categoría (puede estar vacío)
   autorId: number;
   autor: Autor;
-  categorias?: Categoria[]; // solo viene en GET /api/libros/:id
+  categorias?: Categoria[];
 }
 
 // Lo que manda POST /api/libros: autorId, no el nombre del autor.
