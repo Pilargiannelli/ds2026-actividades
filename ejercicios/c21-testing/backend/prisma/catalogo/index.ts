@@ -1,5 +1,7 @@
 // Punto de entrada del catálogo: une los lotes. Para sumar una disciplina, crear su
 // archivo de lote, agregar la categoría (con orden) en base.ts y sumarla acá.
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { arquitectura } from "./arquitectura";
 import { arte } from "./arte";
 import { autoresBase, categorias, librosBase } from "./base";
@@ -39,12 +41,29 @@ const conNacionalidad = new Map<string, string | null>([
   ...Object.entries(nacionalidadesLiteratura),
 ]);
 
-// Cada libro con sus géneros cargados + los derivados por regla (ver generos.ts).
+// Portadas de Open Library. Solo para los libros sin imagen propia. Primero la tapa de la
+// 1.ª edición (primeras-ediciones.ts); si no hay, la de otra edición (portadas.ts).
+// El fragmento #primera-edicion no llega al servidor: le avisa al front qué leyenda poner.
+const leerJson = (archivo: string): Record<string, number | null> =>
+  existsSync(join(__dirname, archivo)) ? JSON.parse(readFileSync(join(__dirname, archivo), "utf8")) : {};
+const primeras = leerJson("primeras-ediciones.json");
+const otras = leerJson("portadas.json");
+const urlPortada = (clave: string) => {
+  if (primeras[clave]) return `https://covers.openlibrary.org/b/id/${primeras[clave]}-L.jpg#primera-edicion`;
+  if (otras[clave]) return `https://covers.openlibrary.org/b/id/${otras[clave]}-L.jpg`;
+  return undefined;
+};
+
+// Cada libro con sus géneros cargados + los derivados por regla (ver generos.ts) y su portada.
 export const libros: LibroSemilla[] = Object.values(lotes)
   .flat()
   .map((l) => {
     const derivados = generosDerivados(l.cats, l.anio, conNacionalidad.get(l.autor) ?? null);
-    return { ...l, generos: [...new Set([...(l.generos ?? []), ...derivados])] };
+    return {
+      ...l,
+      generos: [...new Set([...(l.generos ?? []), ...derivados])],
+      imagen: l.imagen ?? urlPortada(`${l.titulo}|${l.autor}`),
+    };
   });
 
 export const autores: AutorSemilla[] = [...new Set(libros.map((l) => l.autor))].map((nombre) => ({

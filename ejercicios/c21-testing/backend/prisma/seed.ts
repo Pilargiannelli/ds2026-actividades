@@ -38,11 +38,15 @@ async function main() {
     const yaExiste = await prisma.libro.findFirst({ where: { titulo: datos.titulo, autor: { nombre: autor } } });
 
     if (yaExiste) {
-      // Completa los datos bibliográficos y las categorías. No toca imagen, precio ni
-      // disponibilidad: pueden haber cambiado desde la app.
+      // Completa los datos bibliográficos y las categorías. No toca precio ni disponibilidad
+      // (pueden haber cambiado desde la app). La imagen solo se pone si no tenía o si era
+      // una de Open Library (puede haber aparecido la de la 1.ª edición); una cargada desde
+      // la app no se pisa.
+      const imagenReemplazable = yaExiste.imagen == null || yaExiste.imagen.startsWith("https://covers.openlibrary.org/");
       await prisma.libro.update({
         where: { id: yaExiste.id },
         data: {
+          ...(imagenReemplazable && datos.imagen ? { imagen: datos.imagen } : {}),
           anio: datos.anio,
           editorial: datos.editorial,
           descripcion: datos.descripcion,
