@@ -474,7 +474,7 @@
   pointer-events: auto;
   background: color-mix(in srgb, var(--ed-fondo) 70%, transparent);
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.35s ease;
 }
 
 .lb:is([data-fase="extrayendo"], [data-fase="girando"], [data-fase="abriendo"], [data-fase="abierto"], [data-fase="cerrando"])
@@ -723,13 +723,13 @@
   padding: 11% 11% 8% 13%;
   color: var(--ed-tinta);
   opacity: 0;
-  transition: opacity 0.26s ease;
+  transition: opacity 0.18s ease;
   overscroll-behavior: contain;
 }
 
 .lb[data-fase="abierto"] .lb-info {
   opacity: 1;
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
 }
 
 .lb-info p {
@@ -754,7 +754,7 @@
 
 .lb-info__titulo {
   margin: 0.8rem 0 0.55rem;
-  font-family: var(--ed-serif);
+  font-family: var(--fuente-titulos);
   font-size: clamp(1.9rem, 3.2vw, 2.7rem);
   font-weight: 400;
   line-height: 1.05;

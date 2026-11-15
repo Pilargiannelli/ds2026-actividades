@@ -28,18 +28,211 @@
     --color-topo-oscuro:  #6E6359;
     --color-malva:        #86605F;
     --color-ocre:         #7F6A35;
+    /* Rosa viejo para los acentos caligráficos: 4,6:1 sobre --color-fondo (solo en títulos grandes). */
+    --color-rosa:         #A35D69;
+
+    /* Tipografía del sitio: títulos en Cormorant Garamond (fina y delicada), acentos
+       caligráficos en Great Vibes (pocas palabras: el logo y una por título grande) y
+       textos en Inter Tight. Los lomos y portadas provisionales siguen con Newsreader. */
+    --fuente-titulos: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;
+    --fuente-script:  "Great Vibes", "Snell Roundhand", cursive;
+    /* Letra del logo (header y footer): cambiarla acá cambia las dos. */
+    --fuente-logo:    "Instrument Serif", var(--fuente-titulos);
+    /* Rosa empolvado del logo: 9:1 sobre el marrón del header. */
+    --color-logo:     #F3C6C8;
 }
 
+/* Acento caligráfico: una palabra dentro de un título grande. */
+.acento-script {
+    font-family: var(--fuente-script);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.12em;
+    line-height: 0.8;
+    letter-spacing: 0;
+    color: var(--color-rosa);
+    padding-right: 0.05em; /* la cola de la última letra no se recorta */
+}
+
+/* Logo "Marea": luna sobre dos olas + el nombre en Instrument Serif itálica, todo en
+   rosa empolvado. Al pasar el mouse, las olas se mecen. */
+.marea-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-logo);
+    line-height: 1;
+}
+
+.marea-logo__simbolo {
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: none;
+}
+
+.marea-logo__simbolo path {
+    transition: transform 0.6s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+.marea-logo__nombre {
+    font-family: var(--fuente-logo);
+    font-size: 2.6rem;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    padding-right: 0.08em; /* la itálica no se recorta */
+}
+
+a:hover .marea-logo__simbolo path:first-of-type { transform: translateX(-2px); }
+a:hover .marea-logo__simbolo path:last-of-type { transform: translateX(2px); }
+
+.navbar .logo {
+    padding-block: 0;
+    margin-right: 2rem;
+    color: var(--color-logo);
+}
+
+.navbar .logo:hover,
+.navbar .logo:focus {
+    color: var(--color-logo);
+}
+
+@media (max-width: 575px) {
+    .marea-logo__simbolo { width: 2.2rem; height: 2.2rem; }
+    .marea-logo__nombre { font-size: 2.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marea-logo__simbolo path { transition: none; }
+}
+
+/* Barra más gruesa, con los enlaces apenas más grandes */
 .navbar {
     background-color: var(--color-brand-navbar);
     color: white;
+    padding-block: 1.5rem;
 }
+
+.navbar .nav-link {
+    font-size: 1.05rem;
+    padding-inline: 0.85rem !important;
+    border-radius: 999px;
+    transition: background-color 0.18s ease;
+}
+
+/* Hover: el enlace se oscurece con una pastilla marrón más profunda que la barra.
+   La página actual queda marcada con una más suave. */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible {
+    background-color: #2a190c;
+    color: #fff !important;
+}
+
+.navbar .nav-link.active {
+    background-color: rgba(0, 0, 0, 0.18);
+    color: #fff !important;
+}
+
+.navbar .nav-link.active:hover {
+    background-color: #2a190c;
+}
+
+.navbar .btn-sm {
+    padding: 0.35rem 0.95rem;
+    font-size: 0.95rem;
+}
+
 
 .navbar a {
     color: white;
 }
 .navbar a:hover {
-    color: #f0e6d6;
+    color: #fff;
+}
+
+/* Fondo marfil en todo el contenido: sin franja blanca antes del footer en páginas cortas */
+main {
+    background: var(--color-fondo);
+}
+
+/* Íconos de favoritos, carrito y cuenta con su contador */
+.header-icono {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.header-icono__cuenta {
+    position: absolute;
+    top: 0.1rem;
+    right: -0.15rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--color-terracota);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.1rem;
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    .header-icono { font-size: 1rem; }
+    .header-icono__cuenta { position: static; margin-left: 0.5rem; }
+}
+
+.site-footer {
+    padding-block: 2.5rem;
+    background: var(--color-marron);
+    color: var(--color-crema);
+}
+
+.site-footer__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer a {
+    color: var(--color-crema);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.site-footer__copy {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Marca y slogan al pie: el nombre con la letra del logo, el slogan en itálica fina */
+.site-footer__marca {
+    margin: 0;
+    font-size: 1.15rem; /* escala el logo: símbolo y nombre */
+}
+
+.site-footer__marca .marea-logo__simbolo { width: 2.4rem; height: 2.4rem; }
+.site-footer__marca .marea-logo__nombre { font-size: 2.4rem; }
+
+.site-footer__slogan {
+    margin: 0.4rem 0 1.75rem;
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-crema);
+    opacity: 0.85;
 }
 .hero {
     display: flex;
@@ -210,7 +403,7 @@
 /* Portada grande */
 .book-detail__cover-wrapper {
     position: sticky;
-    top: 80px;               /* se queda fija mientras scrolleás el texto */
+    top: 136px;              /* se queda fija mientras scrolleás el texto */
 }
 
 .book-detail__cover {
@@ -218,6 +411,47 @@
     border-radius: 8px;
     box-shadow: 8px 12px 32px rgba(0, 0, 0, 0.18);
     display: block;
+}
+
+/* Sin imagen: la portada tipográfica del estante, con proporción de libro */
+.book-detail__cover--provisional {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+}
+
+.portada-libro--provisional {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+}
+
+.portada-libro__nota {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.book-detail__generos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    list-style: none;
+}
+
+.book-detail__genero {
+    padding: 0.2rem 0.7rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.book-detail__description--pendiente {
+    font-style: italic;
+    opacity: 0.7;
 }
 
 /* Eyebrow de género */
@@ -232,9 +466,10 @@
 
 /* Título principal */
 .book-detail__title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    color: var(--color-brand-dark);
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+    font-weight: 400;
+    color: var(--color-marron-tinta);
     line-height: 1.1;
     margin-bottom: 0.5rem;
 }
@@ -389,17 +624,43 @@
     color: var(--color-marron-tinta);
     min-height: calc(100vh - 60px);
     padding-bottom: 5rem;
+    overflow-x: clip; /* el fondo de la cabecera va de borde a borde */
 }
 
+/* Cabecera con fondo propio a todo el ancho (el contenido sigue en el container):
+   rubor rosado arriba a la derecha, un toque oliva abajo a la izquierda, y se funde
+   con el marfil de los estantes. Acompaña a la tipografía delicada y al acento rosa. */
 .coleccion__cabecera {
+    position: relative;
+    isolation: isolate;
     padding-top: clamp(2.75rem, 6vw, 5rem);
+    padding-bottom: 2.5rem;
+}
+
+.coleccion__cabecera::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    background:
+        radial-gradient(ellipse 65% 75% at 88% 0%, rgba(184, 104, 120, 0.3), transparent 70%),
+        radial-gradient(ellipse 50% 60% at 30% 10%, rgba(214, 150, 160, 0.18), transparent 70%),
+        radial-gradient(ellipse 45% 60% at 0% 85%, rgba(102, 113, 91, 0.1), transparent 70%),
+        linear-gradient(180deg, #F2DEDC 0%, #F4E5E2 55%, var(--color-fondo) 100%);
+    /* Se desvanece hacia abajo: sin corte contra la trama de papel de los estantes. */
+    -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
 }
 
 /* Inspiración: el título es el protagonista de la sección. */
 .coleccion__titulo {
     max-width: 14ch;
     margin: 0;
-    font-family: var(--ed-serif);
+    font-family: var(--fuente-titulos);
     font-size: clamp(2.6rem, 7.2vw, 5.6rem);
     font-weight: 400;
     line-height: 0.98;
@@ -411,7 +672,7 @@
 .coleccion__bajada {
     max-width: 36rem;
     margin: 1.15rem 0 0;
-    font-family: var(--ed-serif);
+    font-family: var(--fuente-titulos);
     font-size: clamp(1.1rem, 1.7vw, 1.3rem);
     line-height: 1.55;
     color: var(--color-topo-texto);
@@ -469,157 +730,6 @@
 }
 
 
-/*Formulario de contacto */
-
-/* Hero */
-.contact__hero {
-    background-color: var(--color-brand-dark);
-    padding: 3rem 0 3rem;
-}
-
-.contact__hero-title {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 0.5rem;
-}
-
-.contact__hero-subtitle {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 1.05rem;
-    margin-bottom: 0;
-}
-
-/* Columna de información */
-.contact__info {
-    background: #faf7f2;
-    border-radius: 12px;
-    padding: 2rem;
-    height: 100%;
-}
-
-.contact__info-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--color-brand-dark);
-    margin-bottom: 1.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #ede8df;
-}
-
-.contact__info-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.contact__info-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-}
-
-.contact__info-icon {
-    flex-shrink: 0;
-    width: 2.25rem;
-    height: 2.25rem;
-    background-color: var(--color-brand);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    margin-top: 2px;
-}
-
-.contact__info-item strong {
-    display: block;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #999;
-    margin-bottom: 0.2rem;
-}
-
-.contact__info-item p {
-    font-size: 0.95rem;
-    color: var(--color-text);
-    margin: 0;
-    line-height: 1.6;
-}
-
-/* Columna del formulario */
-.contact__form-wrapper {
-    background: #fff;
-    border-radius: 12px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-}
-
-.contact__form-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--color-brand-dark);
-    margin-bottom: 1.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #ede8df;
-}
-
-/* Labels */
-.contact__label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--color-brand-dark);
-    margin-bottom: 0.4rem;
-}
-
-/* Asterisco de obligatorio */
-.contact__required {
-    color: var(--color-brand);
-    font-weight: 700;
-}
-
-.contact__required-note {
-    font-size: 0.8rem;
-    color: #999;
-    margin-bottom: 1.5rem;
-}
-
-/* Inputs, select y textarea */
-.contact__input {
-    border: 1.5px solid #ddd;
-    border-radius: 6px;
-    padding: 0.7rem 1rem;
-    font-size: 0.95rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.contact__input:focus {
-    border-color: var(--color-brand);
-    box-shadow: 0 0 0 3px rgba(111, 72, 35, 0.12);
-}
-
-/* Botón enviar */
-.contact__btn-submit {
-    background-color: var(--color-brand);
-    color: #fff;
-    border: none;
-    padding: 0.85rem;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 6px;
-    transition: background 0.2s, transform 0.2s;
-}
-
-.contact__btn-submit:hover {
-    background-color: var(--color-brand-dark);
-    color: #fff;
-    transform: translateY(-2px);
-}
 /* =========================
    EN FOCO
 ========================= */
@@ -825,15 +935,4 @@
   .destacado-img {
     height: 300px;
   }
-}
-
-/* Responsive */
-@media (max-width: 991px) {
-    .contact__form-wrapper {
-        padding: 1.5rem;
-    }
-
-    .contact__info {
-        padding: 1.5rem;
-    }
 }
