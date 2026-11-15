@@ -144,6 +144,21 @@ export function colorDominante(px: ArrayLike<number>): string | null {
   return rgbAHex(mejor.r / mejor.n, mejor.g / mejor.n, mejor.b / mejor.n);
 }
 
+// Las portadas traídas de Open Library son de alguna edición disponible, no
+// necesariamente de la primera (que es la que figura en la ficha): se rotulan.
+export function esPortadaDeOpenLibrary(imagen: string | null | undefined): boolean {
+  return !!imagen && imagen.startsWith("https://covers.openlibrary.org/");
+}
+
+// El catálogo marca con #primera-edicion las tapas que coinciden con el año y la
+// editorial de la 1.ª edición (ver backend/prisma/catalogo/primeras-ediciones.ts).
+export function notaDePortada(imagen: string | null | undefined): string | null {
+  if (!esPortadaDeOpenLibrary(imagen)) return null;
+  return imagen!.endsWith("#primera-edicion")
+    ? "Portada de la primera edición · Open Library"
+    : "Portada de una edición disponible · Open Library";
+}
+
 // El sello al pie del lomo: la inicial de la editorial (como en los lomos reales).
 // Sin editorial, el de la librería.
 export function selloEditorial(editorial: string | null | undefined): string {

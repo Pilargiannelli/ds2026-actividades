@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Alert, Spinner } from "react-bootstrap";
 import type { Libro } from "../types/libro";
 import { formatearPrecio } from "../utils/formatearPrecio";
+import PortadaLibro from "../components/PortadaLibro";
+import { useTienda } from "../context/TiendaContext";
 
 interface Props {
   libros: Libro[];
@@ -13,6 +15,8 @@ interface Props {
 export default function LibroDetalle({ libros, loading, error }: Props) {
   const { id } = useParams();
   const libro = libros.find((l) => l.id === Number(id));
+  const navigate = useNavigate();
+  const { agregarAlCarrito, estaEnCarrito, esFavorito, alternarFavorito } = useTienda();
 
   useEffect(() => {
     document.title = libro
@@ -71,13 +75,7 @@ export default function LibroDetalle({ libros, loading, error }: Props) {
         <div className="row g-5 align-items-start">
           <div className="col-12 col-md-4">
             <div className="book-detail__cover-wrapper">
-              {libro.imagen ? (
-                <img src={libro.imagen} alt={libro.titulo} className="book-detail__cover" />
-              ) : (
-                <div className="book-detail__cover d-flex align-items-center justify-content-center bg-light text-muted">
-                  <i className="bi bi-book" style={{ fontSize: "4rem" }}></i>
-                </div>
-              )}
+              <PortadaLibro libro={libro} className="book-detail__cover" conNota />
             </div>
           </div>
 
@@ -103,7 +101,23 @@ export default function LibroDetalle({ libros, loading, error }: Props) {
               </p>
             )}
 
-            {libro.descripcion && <p className="book-detail__description">{libro.descripcion}</p>}
+            {libro.generos && libro.generos.length > 0 && (
+              <ul className="book-detail__generos" aria-label="Géneros">
+                {libro.generos.map((g) => (
+                  <li key={g} className="book-detail__genero">
+                    {g}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {libro.descripcion ? (
+              <p className="book-detail__description">{libro.descripcion}</p>
+            ) : (
+              <p className="book-detail__description book-detail__description--pendiente">
+                Todavía no tenemos una reseña de este libro.
+              </p>
+            )}
 
             <p className="book-detail__author">
               <span className="fw-bold">{formatearPrecio(libro.precio)}</span>{" "}
@@ -115,12 +129,30 @@ export default function LibroDetalle({ libros, loading, error }: Props) {
             <hr className="book-detail__divider" />
 
             <div className="book-detail__actions">
-              <button type="button" className="btn book-detail__btn-buy">
-                <i className="bi bi-bag me-2"></i>Comprar
+              {estaEnCarrito(libro.id) ? (
+                <button type="button" className="btn book-detail__btn-buy" onClick={() => navigate("/carrito")}>
+                  <i className="bi bi-bag-check me-2"></i>En tu carrito · Ver carrito
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn book-detail__btn-buy"
+                  disabled={!libro.disponible}
+                  onClick={() => agregarAlCarrito(libro.id)}
+                >
+                  <i className="bi bi-bag me-2"></i>
+                  {libro.disponible ? "Agregar al carrito" : "Agotado"}
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn book-detail__btn-back"
+                aria-pressed={esFavorito(libro.id)}
+                onClick={() => alternarFavorito(libro.id)}
+              >
+                <i className={`bi ${esFavorito(libro.id) ? "bi-heart-fill" : "bi-heart"} me-2`}></i>
+                {esFavorito(libro.id) ? "En favoritos" : "Guardar en favoritos"}
               </button>
-              <Link to="/catalogo" className="btn book-detail__btn-back">
-                <i className="bi bi-grid me-2"></i>Volver al catálogo
-              </Link>
             </div>
           </div>
         </div>

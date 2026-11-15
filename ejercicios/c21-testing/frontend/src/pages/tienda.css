@@ -1,0 +1,1442 @@
+/* =========================================================
+   INICIO, CARRITO, FAVORITOS Y MI CUENTA
+   Misma paleta editorial (style.css) y tipografías del estante.
+   ========================================================= */
+
+:root {
+  --ed-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --ed-sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --tienda-radio: 14px;
+  --tienda-sombra: 0 18px 40px -18px rgba(51, 39, 31, 0.35);
+}
+
+/* ---------- Piezas compartidas ---------- */
+
+.inicio-volanta,
+.tienda__volanta {
+  margin: 0 0 0.75rem;
+  font-family: var(--ed-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-topo-texto);
+}
+
+.tienda__boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.85rem 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-brand-dark);
+  color: var(--color-papel);
+  font-family: var(--ed-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tienda__boton:hover,
+.tienda__boton:focus-visible {
+  background: var(--color-oliva-oscuro);
+  color: var(--color-papel);
+  transform: translateY(-1px);
+}
+
+.tienda__enlace {
+  margin-top: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-topo-texto);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tienda__enlace:hover {
+  color: var(--color-marron-tinta);
+}
+
+/* ---------- 1. Portada del inicio ---------- */
+
+.inicio {
+  background: var(--color-fondo);
+  color: var(--color-marron-tinta);
+}
+
+.inicio-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(560px, calc(100vh - 112px), 860px);
+  overflow: hidden;
+}
+
+.inicio-hero__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+}
+
+/* Fundido marfil a la izquierda: el texto se lee sobre papel, la sala respira a la derecha. */
+.inicio-hero__velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-fondo) 0%,
+    var(--color-fondo) 30%,
+    rgba(246, 243, 237, 0.85) 42%,
+    rgba(246, 243, 237, 0.35) 55%,
+    rgba(246, 243, 237, 0) 66%
+  );
+}
+
+.inicio-hero__contenido {
+  position: relative;
+  padding-block: 6rem;
+}
+
+.inicio-hero__titulo {
+  margin: 0 0 1.5rem;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-marron-tinta);
+}
+
+.inicio-hero__bajada {
+  max-width: 26rem;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--color-marron);
+}
+
+.inicio-hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+}
+
+.inicio-hero__secundario {
+  color: var(--color-marron-tinta);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.inicio-hero__secundario:hover {
+  color: var(--color-oliva-oscuro);
+}
+
+.inicio-hero__scroll {
+  position: absolute;
+  left: 2rem;
+  bottom: 2rem;
+  padding-top: 3.5rem;
+  font-family: var(--ed-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-topo-texto);
+}
+
+.inicio-hero__scroll::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 3rem;
+  background: currentColor;
+}
+
+/* Fichas flotantes sobre la foto (como las tarjetas de la inspiración). */
+.inicio-flotante {
+  position: absolute;
+  display: flex;
+  gap: 0.9rem;
+  width: 19rem;
+  padding: 0.8rem;
+  border-radius: var(--tienda-radio);
+  background: rgba(251, 248, 242, 0.92);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--tienda-sombra);
+  color: var(--color-marron-tinta);
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.inicio-flotante:hover {
+  transform: translateY(-4px);
+  color: var(--color-marron-tinta);
+}
+
+.inicio-flotante--uno {
+  top: 14%;
+  right: 4%;
+}
+
+.inicio-flotante--dos {
+  bottom: 12%;
+  right: 12%;
+  width: 17rem;
+}
+
+.inicio-flotante .portada-libro,
+.inicio-flotante .portada-libro--provisional {
+  flex: 0 0 5rem;
+}
+
+.inicio-flotante__portada {
+  width: 5rem;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  font-size: 0.5rem;
+}
+
+.inicio-flotante__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.inicio-flotante__etiqueta {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-oliva-oscuro);
+}
+
+.inicio-flotante__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+.inicio-flotante__autor {
+  font-size: 0.8rem;
+  color: var(--color-topo-texto);
+}
+
+.inicio-flotante__precio {
+  margin-top: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---------- 2. Estantes ---------- */
+
+.inicio-estantes {
+  padding-block: 6rem 5rem;
+}
+
+.inicio-seccion__titulo {
+  margin: 0 0 2.5rem;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-marron-tinta);
+}
+
+.inicio-estantes__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inicio-estante {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--tienda-radio);
+  background: var(--color-papel);
+  box-shadow: 0 1px 0 var(--color-linea);
+  color: var(--color-marron-tinta);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.inicio-estante:hover,
+.inicio-estante:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--tienda-sombra);
+  color: var(--color-marron-tinta);
+}
+
+/* Tres tapas en abanico sobre el color del estante. */
+.inicio-estante__tapas {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 11rem;
+  padding-top: 1.5rem;
+  background: var(--acento);
+}
+
+/* El ícono queda detrás: se ve solo cuando no hay tapas (o mientras cargan). */
+.inicio-estante__fondo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.inicio-estante__fondo svg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.inicio-estante__tapas > figure {
+  position: relative;
+  width: 5.5rem;
+  margin-inline: -0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.inicio-estante__tapas > figure:nth-of-type(1) { transform: rotate(-8deg) translateY(6px); }
+.inicio-estante__tapas > figure:nth-of-type(2) { z-index: 1; transform: translateY(-6px); }
+.inicio-estante__tapas > figure:nth-of-type(3) { transform: rotate(8deg) translateY(6px); }
+
+.inicio-estante:hover .inicio-estante__tapas > figure:nth-of-type(1) { transform: rotate(-12deg) translate(-6px, 4px); }
+.inicio-estante:hover .inicio-estante__tapas > figure:nth-of-type(3) { transform: rotate(12deg) translate(6px, 4px); }
+
+.inicio-estante__tapa {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+  font-size: 0.45rem;
+}
+
+.inicio-estante__pie {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+}
+
+.inicio-estante__icono {
+  flex: none;
+  width: 1.5rem;
+  color: var(--acento);
+}
+
+.inicio-estante__textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.inicio-estante__nombre {
+  font-family: var(--fuente-titulos);
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+.inicio-estante__cantidad {
+  font-size: 0.8rem;
+  color: var(--color-topo-texto);
+}
+
+.inicio-estante__flecha {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: auto;
+  border: 1px solid var(--color-linea);
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.inicio-estante:hover .inicio-estante__flecha {
+  background: var(--color-marron-tinta);
+  color: var(--color-papel);
+}
+
+/* ---------- 3. Banda ondulada ---------- */
+
+.inicio-banda {
+  position: relative;
+  padding-block: 7rem;
+  background: var(--color-terracota);
+  color: var(--color-papel);
+}
+
+.inicio-banda__ola {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  fill: var(--color-fondo);
+}
+
+.inicio-banda__ola--arriba { top: -1px; }
+.inicio-banda__ola--abajo { bottom: -1px; }
+
+.inicio-volanta--clara {
+  color: var(--color-crema);
+}
+
+.inicio-seccion__titulo--claro {
+  color: var(--color-papel);
+}
+
+.inicio-banda__tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1.5rem;
+}
+
+/* Tarjetas tipo "sticker": apenas giradas, se enderezan al pasar. */
+.inicio-paso {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.75rem;
+  border-radius: 20px;
+  background: var(--color-papel);
+  box-shadow: var(--tienda-sombra);
+  color: var(--color-marron-tinta);
+  text-decoration: none;
+  transform: rotate(-1.5deg);
+  transition: transform 0.25s ease;
+}
+
+.inicio-paso:nth-child(2) { transform: rotate(1.2deg); }
+.inicio-paso:nth-child(3) { transform: rotate(-0.8deg); }
+
+.inicio-paso:hover,
+.inicio-paso:focus-visible {
+  transform: rotate(0) translateY(-4px);
+  color: var(--color-marron-tinta);
+}
+
+.inicio-paso__icono {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-marfil);
+  font-size: 1.25rem;
+  color: var(--color-terracota);
+}
+
+.inicio-paso__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+}
+
+.inicio-paso__texto {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-marron);
+}
+
+/* ---------- 5. Cierre ---------- */
+
+.inicio-cierre {
+  padding-block: 2rem 6rem;
+}
+
+.inicio-cierre__caja {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 3rem;
+  border-radius: 24px;
+  background: var(--color-marfil);
+}
+
+.inicio-cierre__caja .inicio-seccion__titulo {
+  margin-bottom: 0.75rem;
+}
+
+.inicio-cierre__texto {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--color-marron);
+}
+
+
+/* ---------- Páginas de la tienda ---------- */
+
+.tienda {
+  min-height: 70vh;
+  padding-bottom: 5rem;
+  background: var(--color-fondo);
+  color: var(--color-marron-tinta);
+}
+
+.tienda__cabecera {
+  padding-block: 4rem 2.5rem;
+}
+
+.tienda__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.tienda__bajada {
+  margin: 1rem 0 0;
+  color: var(--color-topo-texto);
+}
+
+.tienda__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 4rem 1.5rem;
+  border: 1px dashed var(--color-linea);
+  border-radius: var(--tienda-radio);
+  text-align: center;
+  color: var(--color-marron);
+}
+
+.tienda__vacio-icono {
+  margin-bottom: 0.5rem;
+  font-size: 2.25rem;
+  color: var(--color-topo);
+}
+
+.tienda__vacio-titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.6rem;
+  color: var(--color-marron-tinta);
+}
+
+.tienda__vacio .tienda__boton {
+  margin-top: 1.25rem;
+}
+
+/* Carrito */
+.carrito {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.carrito__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-linea);
+}
+
+.carrito__item {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto 7rem 2rem;
+  gap: 1.25rem;
+  align-items: center;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--color-linea);
+}
+
+.carrito__imagen {
+  display: block;
+  width: 5rem;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  font-size: 0.45rem;
+}
+
+.carrito__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--color-marron-tinta);
+  text-decoration: none;
+}
+
+.carrito__titulo:hover {
+  text-decoration: underline;
+}
+
+.carrito__autor,
+.carrito__unitario {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-topo-texto);
+}
+
+.carrito__aviso {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-terracota);
+}
+
+.carrito__cantidad {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-linea);
+  border-radius: 999px;
+}
+
+.carrito__cantidad button {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-marron-tinta);
+  font-size: 1.1rem;
+}
+
+.carrito__cantidad button:hover:not(:disabled) {
+  background: var(--color-marfil);
+}
+
+.carrito__cantidad button:disabled {
+  opacity: 0.35;
+}
+
+.carrito__cantidad span {
+  min-width: 1.75rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.carrito__subtotal {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.carrito__quitar {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-topo-texto);
+}
+
+.carrito__quitar:hover {
+  background: var(--color-marfil);
+  color: var(--color-marron-tinta);
+}
+
+.carrito__resumen {
+  position: sticky;
+  top: 136px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border-radius: var(--tienda-radio);
+  background: var(--color-papel);
+  box-shadow: 0 1px 0 var(--color-linea);
+}
+
+.carrito__resumen-titulo {
+  margin: 0 0 1rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+}
+
+.carrito__resumen dl {
+  margin: 0 0 1rem;
+}
+
+.carrito__resumen dl > div {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 0.4rem;
+}
+
+.carrito__resumen dd {
+  margin: 0;
+}
+
+.carrito__total {
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--color-linea);
+  padding-top: 0.8rem !important;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.carrito__nota {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-topo-texto);
+}
+
+.carrito__nota a {
+  color: var(--color-marron-tinta);
+}
+
+/* Favoritos */
+.favoritos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: 2.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.favoritos__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.favoritos__portada {
+  display: block;
+  margin-bottom: 0.9rem;
+  transition: transform 0.25s ease;
+}
+
+.favoritos__portada:hover {
+  transform: translateY(-4px);
+}
+
+.favoritos__imagen {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.35);
+  font-size: 0.6rem;
+}
+
+.favoritos__corazon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-papel);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: var(--color-terracota);
+}
+
+.favoritos__titulo {
+  font-family: var(--fuente-titulos);
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: var(--color-marron-tinta);
+  text-decoration: none;
+}
+
+.favoritos__titulo:hover {
+  text-decoration: underline;
+}
+
+.favoritos__autor {
+  margin: 0.2rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-topo-texto);
+}
+
+.favoritos__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.favoritos__precio {
+  font-weight: 600;
+}
+
+.favoritos__carrito {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--color-marron-tinta);
+  border-radius: 999px;
+  background: none;
+  color: var(--color-marron-tinta);
+  font-size: 0.8rem;
+}
+
+.favoritos__carrito:hover:not(:disabled) {
+  background: var(--color-marron-tinta);
+  color: var(--color-papel);
+}
+
+.favoritos__carrito:disabled {
+  border-color: var(--color-linea);
+  color: var(--color-topo-texto);
+}
+
+.favoritos__agotado {
+  font-size: 0.8rem;
+  color: var(--color-topo-texto);
+}
+
+/* Mi cuenta */
+.cuenta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: 1.25rem;
+}
+
+.cuenta__tarjeta {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border-radius: var(--tienda-radio);
+  background: var(--color-papel);
+  box-shadow: 0 1px 0 var(--color-linea);
+  color: var(--color-marron-tinta);
+}
+
+.cuenta__tarjeta--datos {
+  grid-column: 1 / -1;
+  align-items: flex-start;
+}
+
+.cuenta__subtitulo {
+  margin: 0 0 1rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+}
+
+.cuenta__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem 2rem;
+  width: 100%;
+  margin: 0;
+}
+
+.cuenta__datos dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-topo-texto);
+}
+
+.cuenta__datos dd {
+  margin: 0.2rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.cuenta__acceso {
+  gap: 0.25rem;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cuenta__acceso:hover,
+.cuenta__acceso:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--tienda-sombra);
+  color: var(--color-marron-tinta);
+}
+
+.cuenta__acceso .bi {
+  font-size: 1.5rem;
+  color: var(--color-terracota);
+}
+
+.cuenta__numero {
+  font-family: var(--fuente-titulos);
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+.cuenta__etiqueta {
+  color: var(--color-marron);
+}
+
+/* Contacto: reserva y consulta */
+.contacto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.contacto__bajada {
+  max-width: 40rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.contacto__modos {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--color-marfil);
+}
+
+.contacto__modos button {
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--color-marron);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contacto__modos button[aria-pressed="true"] {
+  background: var(--color-papel);
+  box-shadow: 0 2px 8px rgba(51, 39, 31, 0.12);
+  color: var(--color-marron-tinta);
+}
+
+.contacto__form {
+  padding: 2rem;
+  border-radius: var(--tienda-radio);
+  background: var(--color-papel);
+  box-shadow: 0 1px 0 var(--color-linea);
+}
+
+.contacto__bloque {
+  margin: 0 0 2rem;
+  padding: 0 0 2rem;
+  border: 0;
+  border-bottom: 1px solid var(--color-linea);
+}
+
+.contacto__leyenda {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+  color: var(--color-marron-tinta);
+}
+
+.contacto__numero {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--color-terracota);
+  color: var(--color-papel);
+  font-family: var(--ed-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.contacto__grilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.contacto__label {
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-marron-tinta);
+}
+
+.contacto__input {
+  border-color: var(--color-linea);
+  border-radius: 10px;
+  background-color: var(--color-fondo);
+}
+
+.contacto__input:focus {
+  border-color: var(--color-oliva);
+  box-shadow: 0 0 0 0.2rem rgba(102, 113, 91, 0.2);
+  background-color: #fff;
+}
+
+.contacto__ayuda {
+  color: var(--color-topo-texto) !important;
+}
+
+.contacto__opciones {
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.contacto__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.contacto__chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contacto__chip span {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--color-linea);
+  border-radius: 999px;
+  background: var(--color-fondo);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.contacto__chip input:checked + span {
+  border-color: var(--color-marron-tinta);
+  background: var(--color-marron-tinta);
+  color: var(--color-papel);
+}
+
+.contacto__chip input:focus-visible + span {
+  outline: 2px solid var(--color-oliva);
+  outline-offset: 2px;
+}
+
+.contacto__error {
+  margin: 0.35rem 0 0;
+  font-size: 0.875em;
+  color: var(--bs-form-invalid-color);
+}
+
+.contacto__condiciones {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--color-marron);
+}
+
+.contacto__exito {
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #e7efe3;
+  color: var(--color-brand-dark);
+}
+
+/* Libros de la reserva */
+.reserva__libros {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.reserva__libro {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding-block: 0.6rem;
+  border-bottom: 1px dashed var(--color-linea);
+}
+
+.reserva__tapa {
+  display: block;
+  width: 2.75rem;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 3px;
+  font-size: 0.3rem;
+}
+
+.reserva__libro-texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.reserva__libro-titulo {
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.reserva__libro-autor,
+.reserva__libro-cantidad {
+  font-size: 0.85rem;
+  color: var(--color-topo-texto);
+}
+
+.reserva__libro-precio {
+  font-weight: 600;
+}
+
+.reserva__total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem 0;
+  font-size: 1.05rem;
+}
+
+.reserva__vacio {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--color-fondo);
+  color: var(--color-marron);
+}
+
+.reserva__vacio a {
+  color: var(--color-marron-tinta);
+}
+
+/* Confirmación */
+.contacto__confirmacion p {
+  color: var(--color-marron);
+  line-height: 1.6;
+}
+
+.contacto__confirmacion-icono {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: #e7efe3;
+  font-size: 1.5rem;
+  color: var(--color-brand-dark);
+}
+
+.contacto__confirmacion-titulo {
+  margin-bottom: 0.75rem;
+  font-family: var(--fuente-titulos);
+  font-size: 2.25rem;
+}
+
+.contacto__resumen {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 10px;
+  background: var(--color-fondo);
+}
+
+.contacto__resumen > div {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-block: 0.4rem;
+}
+
+.contacto__resumen dt {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-topo-texto);
+}
+
+.contacto__resumen dd {
+  margin: 0;
+}
+
+/* Columna lateral */
+.contacto__lateral {
+  position: sticky;
+  top: 136px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contacto__tarjeta {
+  padding: 1.75rem;
+  border-radius: var(--tienda-radio);
+  background: var(--color-marfil);
+}
+
+.contacto__subtitulo {
+  margin: 0 0 1rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.35rem;
+}
+
+.contacto__pasos {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--color-marron);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.contacto__pasos li + li {
+  margin-top: 0.6rem;
+}
+
+.contacto__pasos strong {
+  color: var(--color-marron-tinta);
+}
+
+.contacto__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--color-marron);
+}
+
+.contacto__datos li {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.contacto__datos .bi {
+  font-size: 1.1rem;
+  color: var(--color-terracota);
+}
+
+.contacto__datos strong {
+  display: block;
+  color: var(--color-marron-tinta);
+}
+
+@media (max-width: 991px) {
+  .contacto {
+    grid-template-columns: 1fr;
+  }
+
+  .contacto__lateral {
+    position: static;
+  }
+}
+
+@media (max-width: 575px) {
+  .contacto__form {
+    padding: 1.25rem;
+  }
+
+  .contacto__grilla {
+    grid-template-columns: 1fr;
+  }
+
+  .contacto__modos {
+    display: flex;
+  }
+
+  .contacto__modos button {
+    flex: 1;
+    padding-inline: 0.5rem;
+  }
+
+  .reserva__libro {
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  }
+
+  .reserva__libro-cantidad {
+    display: none;
+  }
+
+  .contacto__resumen > div {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}
+
+/* Portadas dentro de enlaces: sin el subrayado del link (se propaga a la portada provisional). */
+.favoritos__portada,
+.carrito__portada,
+.inicio-flotante,
+.inicio-estante {
+  text-decoration: none;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 991px) {
+  .inicio-hero {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+  }
+
+  .inicio-hero__velo {
+    background: linear-gradient(180deg, rgba(246, 243, 237, 0.96) 0%, rgba(246, 243, 237, 0.9) 55%, rgba(246, 243, 237, 0.4) 100%);
+  }
+
+  .inicio-hero__contenido {
+    padding-block: 4rem 2rem;
+  }
+
+  /* Las fichas dejan de flotar: van debajo del texto. */
+  .inicio-flotante {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0 16px 1rem;
+  }
+
+  .inicio-flotante--dos {
+    margin-bottom: 3rem;
+  }
+
+  .inicio-hero__scroll {
+    display: none;
+  }
+
+  .carrito {
+    grid-template-columns: 1fr;
+  }
+
+  .carrito__resumen {
+    position: static;
+  }
+}
+
+@media (max-width: 575px) {
+  .carrito__item {
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      "portada datos quitar"
+      "portada cantidad subtotal";
+    gap: 0.75rem;
+  }
+
+  .carrito__portada { grid-area: portada; }
+  .carrito__datos { grid-area: datos; }
+  .carrito__quitar { grid-area: quitar; }
+  .carrito__cantidad { grid-area: cantidad; justify-self: start; }
+  .carrito__subtotal { grid-area: subtotal; }
+  .carrito__quitar { justify-self: end; }
+
+  .carrito__imagen {
+    width: 4rem;
+  }
+
+  .inicio-cierre__caja {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inicio-flotante,
+  .inicio-estante,
+  .inicio-estante__tapas > figure,
+  .inicio-paso,
+  .favoritos__portada,
+  .cuenta__acceso,
+  .tienda__boton {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   TIPOGRAFÍA: Cormorant Garamond (títulos) + Great Vibes (acentos)
+   Cormorant tiene poca altura de x y trazos finos: los títulos grandes van en Light
+   y un poco más grandes; los chicos, más gruesos para que se lean bien.
+   ========================================================= */
+
+/* Grandes: Light */
+.inicio-hero__titulo,
+.inicio-seccion__titulo,
+.tienda__titulo,
+.contacto__confirmacion-titulo {
+  font-weight: 300;
+  letter-spacing: -0.015em;
+}
+
+.inicio-hero__titulo {
+  font-size: clamp(3.75rem, 9.5vw, 8rem);
+  line-height: 0.9;
+  text-transform: none;
+}
+
+.inicio-seccion__titulo {
+  font-size: clamp(2.3rem, 5vw, 3.75rem);
+}
+
+.tienda__titulo {
+  font-size: clamp(2.9rem, 7vw, 5.25rem);
+}
+
+/* Medianos */
+.contacto__leyenda,
+.contacto__subtitulo,
+.carrito__resumen-titulo,
+.cuenta__subtitulo,
+.tienda__vacio-titulo {
+  font-weight: 500;
+}
+
+.contacto__leyenda { font-size: 1.7rem; }
+.contacto__subtitulo,
+.carrito__resumen-titulo,
+.cuenta__subtitulo { font-size: 1.6rem; }
+.tienda__vacio-titulo { font-size: 1.85rem; }
+
+/* Chicos: más peso */
+.inicio-flotante__titulo,
+.inicio-estante__nombre,
+.inicio-paso__titulo,
+.carrito__titulo,
+.favoritos__titulo,
+.reserva__libro-titulo {
+  font-weight: 600;
+}
+
+.inicio-flotante__titulo { font-size: 1.3rem; }
+.inicio-estante__nombre { font-size: 1.3rem; }
+.inicio-paso__titulo { font-size: 1.75rem; }
+.carrito__titulo { font-size: 1.4rem; }
+.favoritos__titulo { font-size: 1.25rem; }
+.reserva__libro-titulo { font-size: 1.15rem; }
+
+.cuenta__numero {
+  font-weight: 400;
+  font-size: 2.9rem;
+}
+
+/* "En foco" (componente propio) también con la letra de títulos */
+.inicio .books-scroll__title {
+  font-family: var(--fuente-titulos);
+  font-size: clamp(2.3rem, 5vw, 3.75rem);
+  font-weight: 300;
+}
+
+/* En la banda terracota el acento va en crema, no en rosa. */
+.inicio-banda .acento-script {
+  color: var(--color-crema);
+}

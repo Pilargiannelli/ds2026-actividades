@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
 import { AuthContext } from '../../context/AuthContext';
+import { TiendaProvider } from '../../context/TiendaContext';
 import type { Rol, Usuario } from '../../types/auth';
 
 // El Header según el rol: la columna "Qué hace la UI" de la matriz de C20.
@@ -20,7 +21,9 @@ function renderHeader(usuario: Usuario | null, { cargando = false } = {}) {
   render(
     <MemoryRouter>
       <AuthContext.Provider value={auth}>
-        <Header />
+        <TiendaProvider>
+          <Header />
+        </TiendaProvider>
       </AuthContext.Provider>
     </MemoryRouter>,
   );

@@ -2,11 +2,12 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
+import { useTienda } from "../../context/TiendaContext";
 import { apiFetch } from "../../services/api";
 import type { Categoria, Libro } from "../../types/libro";
 import { formatearPrecio } from "../../utils/formatearPrecio";
 import { LomoCara, PortadaTipografica } from "./Caras";
-import { aparienciaDelLibro, tamanoAbierto } from "./libroVisual";
+import { aparienciaDelLibro, notaDePortada, tamanoAbierto } from "./libroVisual";
 import { usePortada } from "./usePortada";
 
 // Estados del libro seleccionado. "cerrado" = en el estante (hover es CSS puro).
@@ -126,6 +127,7 @@ type Animador = ReturnType<typeof crearAnimador>;
 export default function LibroAbierto({ libro, origen, meGusta, onMeGusta, onFase, onTerminar }: Props) {
   const portada = usePortada(libro.imagen ?? undefined);
   const apariencia = aparienciaDelLibro(libro, portada);
+  const { agregarAlCarrito, estaEnCarrito } = useTienda();
   const [g] = useState(() => calcularGeometria(origen, portada.proporcion));
   // Sin animaciones (movimiento reducido, o un entorno sin Web Animations) no hay pausas
   // de presentación: cada pose se aplica de inmediato.
@@ -169,18 +171,18 @@ export default function LibroAbierto({ libro, origen, meGusta, onMeGusta, onFase
 
     try {
       cambiarFase("cerrando"); // la ficha se desvanece (CSS)
-      await pausa(reducido ? 0 : 260);
+      await pausa(reducido ? 0 : 140);
       await Promise.all([
-        an.animar(tapaEl, tapa(g.D, -180), tapa(g.D, 0), 720, APERTURA),
-        an.animar(libroEl, pose(abierto), pose(centro), 720, APERTURA),
+        an.animar(tapaEl, tapa(g.D, -180), tapa(g.D, 0), 420, APERTURA),
+        an.animar(libroEl, pose(abierto), pose(centro), 420, APERTURA),
       ]);
 
       // El estante pudo moverse (scroll, resize): se mide recién ahora.
       origen.scrollIntoView?.({ block: "nearest", inline: "nearest", behavior: "instant" });
       const { base, afuera } = posesDesde(origen.getBoundingClientRect(), g);
       cambiarFase("regresando");
-      await an.animar(libroEl, pose(centro), pose(afuera), 820, GIRO);
-      await an.animar(libroEl, pose(afuera), pose(base), 340, ENTRADA);
+      await an.animar(libroEl, pose(centro), pose(afuera), 440, GIRO);
+      await an.animar(libroEl, pose(afuera), pose(base), 220, ENTRADA);
       if (reducido) await pausa(220); // el fundido de salida (CSS)
       onTerminar();
     } catch {
@@ -207,18 +209,18 @@ export default function LibroAbierto({ libro, origen, meGusta, onMeGusta, onFase
 
     (async () => {
       try {
-        await an.animar(libroEl, pose(base), pose(afuera), 380, SALIDA);
+        await an.animar(libroEl, pose(base), pose(afuera), 220, SALIDA);
         if (!vivo) return;
         cambiarFase("girando");
-        await an.animar(libroEl, pose(afuera), pose(centro), 860, GIRO);
+        await an.animar(libroEl, pose(afuera), pose(centro), 480, GIRO);
         if (!vivo) return;
         // Una pausa breve con la portada de frente, a tamaño completo, para reconocerla.
-        await pausa(reducido ? 0 : 320);
+        await pausa(reducido ? 0 : 90);
         if (!vivo) return;
         cambiarFase("abriendo");
         await Promise.all([
-          an.animar(tapaEl, tapa(g.D, 0), tapa(g.D, -180), 960, APERTURA),
-          an.animar(libroEl, pose(centro), pose(abierto), 960, APERTURA),
+          an.animar(tapaEl, tapa(g.D, 0), tapa(g.D, -180), 540, APERTURA),
+          an.animar(libroEl, pose(centro), pose(abierto), 540, APERTURA),
         ]);
         if (!vivo) return;
         cambiarFase("abierto");
@@ -373,6 +375,17 @@ export default function LibroAbierto({ libro, origen, meGusta, onMeGusta, onFase
                 <button type="button" className="lb-info__megusta" aria-pressed={meGusta} onClick={onMeGusta}>
                   <span aria-hidden="true">{meGusta ? "♥" : "♡"}</span> {meGusta ? "Te gusta" : "Me gusta"}
                 </button>
+                {libro.disponible && (
+                  <button
+                    type="button"
+                    className="lb-info__megusta"
+                    aria-pressed={estaEnCarrito(libro.id)}
+                    onClick={() => agregarAlCarrito(libro.id)}
+                  >
+                    <span aria-hidden="true">{estaEnCarrito(libro.id) ? "✓" : "+"}</span>{" "}
+                    {estaEnCarrito(libro.id) ? "En el carrito" : "Al carrito"}
+                  </button>
+                )}
                 <Link to={`/libros/${libro.id}`} className="lb-info__enlace">
                   Ver ficha completa <span aria-hidden="true">→</span>
                 </Link>
@@ -396,7 +409,12 @@ export default function LibroAbierto({ libro, origen, meGusta, onMeGusta, onFase
             <div className="lb-tapa__dorso lb-pagina lb-pagina--izq">
               <figure className="lb-lamina">
                 {conImagen ? (
-                  <img src={libro.imagen ?? undefined} alt={`Portada de ${libro.titulo}`} className="lb-lamina__imagen" />
+                  <>
+                    <img src={libro.imagen ?? undefined} alt={`Portada de ${libro.titulo}`} className="lb-lamina__imagen" />
+                    {notaDePortada(libro.imagen) && (
+                      <figcaption className="lb-lamina__nota">{notaDePortada(libro.imagen)}</figcaption>
+                    )}
+                  </>
                 ) : (
                   <>
                     <div className="lb-lamina__tipo">

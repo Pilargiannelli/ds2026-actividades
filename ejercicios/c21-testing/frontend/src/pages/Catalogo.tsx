@@ -14,6 +14,8 @@ import {
 } from "../components/Estante/busqueda";
 import type { Filtros } from "../components/Estante/busqueda";
 import type { Libro } from "../types/libro";
+import { useSearchParams } from "react-router-dom";
+import { useTienda } from "../context/TiendaContext";
 
 interface Props {
   libros: Libro[];
@@ -22,8 +24,11 @@ interface Props {
 }
 
 export default function Catalogo({ libros, loading, error }: Props) {
-  const [meGusta, setMeGusta] = useState<ReadonlySet<number>>(() => new Set());
-  const [filtros, setFiltros] = useState<Filtros>(SIN_FILTROS);
+  // Los "Me gusta" del estante son los favoritos de la cuenta (página /favoritos).
+  const { favoritos: meGusta, alternarFavorito: alternarMeGusta } = useTienda();
+  // /catalogo?categoria=Arte: se llega desde las tarjetas del inicio con el estante ya elegido.
+  const [params] = useSearchParams();
+  const [filtros, setFiltros] = useState<Filtros>(() => ({ ...SIN_FILTROS, categoria: params.get("categoria") }));
   const bibliotecaRef = useRef<BibliotecaApi>(null);
 
   useEffect(() => {
@@ -52,14 +57,6 @@ export default function Catalogo({ libros, loading, error }: Props) {
     [indice],
   );
 
-  const alternarMeGusta = useCallback((id: number) => {
-    setMeGusta((prev) => {
-      const siguiente = new Set(prev);
-      if (siguiente.has(id)) siguiente.delete(id);
-      else siguiente.add(id);
-      return siguiente;
-    });
-  }, []);
 
   // Limpiar quita búsqueda, categoría y género, pero respeta el orden elegido.
   const limpiar = () => setFiltros((f) => ({ ...SIN_FILTROS, orden: f.orden }));
@@ -67,7 +64,9 @@ export default function Catalogo({ libros, loading, error }: Props) {
   return (
     <section className="coleccion">
       <header className="coleccion__cabecera container">
-        <h1 className="coleccion__titulo">Encontrá tu próximo libro.</h1>
+        <h1 className="coleccion__titulo">
+          Encontrá tu próximo <span className="acento-script">libro.</span>
+        </h1>
         <p className="coleccion__bajada">
           Historias, ideas e inspiración te esperan. Explorá nuestra colección y descubrí ese libro que todavía no sabías
           que estabas buscando.

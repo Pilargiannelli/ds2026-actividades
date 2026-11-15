@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import type { Libro } from "../../types/libro";
+import { TiendaProvider } from "../../context/TiendaContext";
 import Biblioteca from "./Biblioteca";
 
 // Las categorías ya vienen en el listado: la ficha no debería pedir nada.
@@ -53,7 +54,9 @@ const libros: Libro[] = [
 function renderBiblioteca() {
   return render(
     <MemoryRouter>
-      <Biblioteca libros={libros} meGusta={new Set()} onMeGusta={() => {}} />
+      <TiendaProvider>
+        <Biblioteca libros={libros} meGusta={new Set()} onMeGusta={() => {}} />
+      </TiendaProvider>
     </MemoryRouter>,
   );
 }

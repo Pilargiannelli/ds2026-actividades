@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import type { Libro } from "../types/libro";
+import { TiendaProvider } from "../context/TiendaContext";
 import Catalogo from "./Catalogo";
 
 vi.mock("../services/api", () => ({ apiFetch: vi.fn(async () => ({})) }));
@@ -35,7 +36,9 @@ const libros: Libro[] = [
 const renderCatalogo = () =>
   render(
     <MemoryRouter>
-      <Catalogo libros={libros} loading={false} error={null} />
+      <TiendaProvider>
+        <Catalogo libros={libros} loading={false} error={null} />
+      </TiendaProvider>
     </MemoryRouter>,
   );
 
