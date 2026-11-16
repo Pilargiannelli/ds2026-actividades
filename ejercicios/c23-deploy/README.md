@@ -41,8 +41,9 @@ sale la `DATABASE_URL` **directa** (no la pooled).
 
 - Runtime: Docker
 - Root directory: `ejercicios/c23-deploy/backend`
-- Dockerfile path: `ejercicios/c23-deploy/backend/Dockerfile.prod`
-- Docker build context: `ejercicios/c23-deploy/backend`
+- Dockerfile path: `./Dockerfile.prod` (si el campo no muestra adelante la
+  carpeta raiz, usar la ruta completa `ejercicios/c23-deploy/backend/Dockerfile.prod`)
+- Docker build context: `.` (o `ejercicios/c23-deploy/backend`, mismo criterio)
 - `Dockerfile.prod` es multi-stage: compila con `tsc` y la imagen final solo
   tiene `dist/` y lo que Prisma necesita
 - Al arrancar corre `prisma migrate deploy` y despues `node dist/index.js`
