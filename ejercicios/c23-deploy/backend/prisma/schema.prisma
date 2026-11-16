@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // sin url: en Prisma 7 va en prisma.config.ts
+}
+
+enum Rol {
+  ADMIN
+  CLIENTE
+}
+
+model Usuario {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique // ← @unique: sin cuentas con el mismo mail
+  passwordHash String // ← el NOMBRE avisa qué se guarda acá, nunca la contraseña
+  nombre       String
+  rol          Rol      @default(CLIENTE) // ← nadie se registra como admin
+  creadoEn     DateTime @default(now())
+}
+
+model Autor {
+  id           Int     @id @default(autoincrement())
+  nombre       String  @unique
+  nacionalidad String? // null = no verificada (no se inventa)
+  libros       Libro[] // lado "muchos": NO crea columna
+}
+
+model Libro {
+  id         Int         @id @default(autoincrement())
+  titulo     String
+  precio     Int
+  imagen     String? // null = sin portada real: el front muestra una provisional
+  disponible Boolean     @default(true)
+  anio        Int? // año de la primera edición
+  editorial   String? // editorial de la primera edición
+  descripcion String?
+  // Géneros o subgéneros dentro de la categoría (Novela, Repostería, Documental...).
+  // Vacío cuando no se conoce con certeza: no se asignan géneros de relleno.
+  generos     String[]    @default([])
+  autorId    Int // la FK: esto SÍ es una columna
+  autor      Autor       @relation(fields: [autorId], references: [id], onDelete: Restrict)
+  categorias Categoria[] // N:M implícita: Prisma maneja la tabla intermedia
+}
+
+model Categoria {
+  id     Int     @id @default(autoincrement())
+  nombre String  @unique
+  // Con orden: es una sección (un estante) del catálogo, en ese orden.
+  // Sin orden: etiqueta secundaria (Clásico, Cuento...).
+  orden  Int?
+  libros Libro[]
+}

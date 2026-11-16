@@ -1,0 +1,962 @@
+/* =========================================================
+   ESTANTE — biblioteca editorial de lomos interactivos
+   ========================================================= */
+
+:root {
+  --ed-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --ed-sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  /* Alias de la paleta del proyecto (style.css): un solo lugar para los colores. */
+  --ed-fondo: var(--color-fondo);
+  --ed-papel: var(--color-papel);
+  --ed-marfil: var(--color-marfil);
+  --ed-crema: var(--color-crema);
+  --ed-tinta: var(--color-marron-tinta);
+  --ed-marron: var(--color-marron);
+  --ed-oliva: var(--color-oliva);
+  --ed-oliva-oscuro: var(--color-oliva-oscuro);
+  --ed-topo: var(--color-topo);
+  --ed-gris: var(--color-topo-texto);
+  --ed-linea: var(--color-linea);
+}
+
+/* ---------- Estante (estado inicial) ---------- */
+
+.estante {
+  --u: 1.12; /* escala de los lomos (+12 % respecto de la primera versión) */
+  position: relative;
+}
+
+.estante__pista {
+  display: flex;
+  align-items: flex-end; /* todos apoyados sobre la misma línea de base */
+  gap: 3px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* arriba: lugar para que el lomo se adelante en hover sin recortarse */
+  padding: 40px 0 34px;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #cfcac0 transparent;
+  -webkit-overflow-scrolling: touch;
+  outline: none;
+}
+
+/* Alineado con el título de su sección (el borde del container); al final deja aire
+   para que el último lomo no quede pegado al borde al desplazar. */
+.estante__pista::before,
+.estante__pista::after {
+  content: "";
+  flex: 0 0 max(12px, calc((100vw - 1320px) / 2 + 12px));
+}
+
+.estante__pista::after {
+  flex-grow: 1;
+}
+
+@media (max-width: 1399px) {
+  .estante__pista::before,
+  .estante__pista::after {
+    flex-basis: max(12px, calc((100vw - 1140px) / 2 + 12px));
+  }
+}
+
+@media (max-width: 1199px) {
+  .estante__pista::before,
+  .estante__pista::after {
+    flex-basis: max(12px, calc((100vw - 960px) / 2 + 12px));
+  }
+}
+
+@media (max-width: 991px) {
+  .estante__pista::before,
+  .estante__pista::after {
+    flex-basis: max(12px, calc((100vw - 720px) / 2 + 12px));
+  }
+}
+
+@media (max-width: 767px) {
+  .estante__pista::before,
+  .estante__pista::after {
+    flex-basis: max(12px, calc((100vw - 540px) / 2 + 12px));
+  }
+}
+
+.estante__hueco {
+  flex: none;
+  /* Al filtrar, los lomos que vuelven a aparecer entran con un fundido corto
+     (los que ya estaban no se vuelven a montar, así que no parpadean). */
+  animation: lomo-entrar 0.38s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  display: flex;
+  align-items: flex-end;
+  width: calc(var(--grosor) * var(--u) * 1px);
+  height: calc(var(--alto) * var(--u) * 1px);
+}
+
+.lomo {
+  /* al volver al estante, scrollIntoView no lo deja debajo de la barra y el índice */
+  scroll-margin: 140px 24px 24px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 1.5px 1.5px 1px 1px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.05),
+    0 12px 14px -12px rgba(0, 0, 0, 0.45);
+  transform: translateY(0);
+  transition:
+    transform 0.42s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.42s cubic-bezier(0.2, 0.7, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover: el libro se adelanta, sin rotar ni mover a los vecinos. */
+@media (hover: hover) {
+  .lomo:hover {
+    transform: translateY(-14px) scale(1.015);
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.04),
+      0 26px 22px -16px rgba(0, 0, 0, 0.42);
+  }
+}
+
+.lomo:focus-visible {
+  outline: 2px solid var(--ed-oliva);
+  outline-offset: 4px;
+  transform: translateY(-14px) scale(1.015);
+}
+
+/* "Abrir libro": aparece sobre el lomo en hover (escritorio) y con foco de teclado. */
+.lomo {
+  position: relative;
+}
+
+.lomo::before {
+  content: "Abrir libro";
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  z-index: 2;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: var(--ed-marron);
+  color: var(--ed-marfil);
+  font-family: var(--ed-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+@media (hover: hover) {
+  .lomo:hover::before {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.lomo:focus-visible::before,
+.lomo.lomo--invitacion::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Primera visita: el libro se adelanta, se queda un momento y vuelve a su lugar. */
+.lomo.lomo--invitacion {
+  animation: lomo-invitacion 2.4s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes lomo-invitacion {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  18%,
+  78% {
+    transform: translateY(-16px) scale(1.02);
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.04),
+      0 26px 22px -16px rgba(51, 39, 31, 0.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lomo.lomo--invitacion {
+    animation: none;
+  }
+}
+
+/* El libro que salió del estante deja su hueco. */
+.lomo[data-fuera] {
+  visibility: hidden;
+  transform: none;
+  transition: none;
+}
+
+@keyframes lomo-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estante__hueco {
+    animation: none;
+  }
+}
+
+/* ---------- Cara del lomo (estante y libro 3D) ---------- */
+
+.lomo-cara {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 16px 0 10px;
+  overflow: hidden;
+  border-radius: inherit;
+  container-type: size;
+  background-color: var(--fondo);
+  background-size: auto 100%;
+  background-position: left center;
+  color: var(--tinta);
+  text-align: left;
+}
+
+/* Volumen: el lomo se curva levemente hacia los bordes. */
+.lomo-cara::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.18) 0,
+    rgba(0, 0, 0, 0) 9%,
+    rgba(255, 255, 255, 0.1) 22%,
+    rgba(255, 255, 255, 0) 46%,
+    rgba(0, 0, 0, 0) 82%,
+    rgba(0, 0, 0, 0.16) 100%
+  );
+}
+
+.lomo-cara--papel::after {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0) 12%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.08) 100%);
+}
+
+/* El borde de la portada como lomo, con un velo de su propio color para leer el texto. */
+.lomo-cara--imagen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--fondo) 72%, transparent);
+}
+
+.lomo-cara > span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Título + autor. Descendente (de arriba abajo, norma anglosajona) o ascendente
+   (de abajo arriba, habitual en ediciones alemanas, suizas y francesas). */
+.lomo-cara__textos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.lomo-cara--ascendente .lomo-cara__textos {
+  transform: rotate(180deg);
+}
+
+.lomo-cara__titulo,
+.lomo-cara__autor {
+  writing-mode: vertical-rl;
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1.05;
+}
+
+/* El tamaño depende del grosor (cqw) y, para títulos largos, del alto disponible (cqh):
+   ~55% del alto para el título, ~30% para el autor. */
+.lomo-cara__titulo {
+  font-size: max(9.5px, min(clamp(10.5px, calc(4px + 22cqw), 17px), calc(108cqh / var(--largo-titulo))));
+}
+
+.lomo-cara--serif .lomo-cara__titulo {
+  font-family: var(--ed-serif);
+  font-weight: 500;
+}
+
+.lomo-cara--sans .lomo-cara__titulo {
+  font-family: var(--ed-sans);
+  font-weight: 500;
+  font-size: max(8px, min(clamp(8.5px, calc(3px + 18cqw), 13px), calc(68cqh / var(--largo-titulo))));
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lomo-cara--serif-italica .lomo-cara__titulo {
+  font-family: var(--ed-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.lomo-cara--condensada .lomo-cara__titulo {
+  font-family: var(--ed-sans);
+  font-weight: 600;
+  font-stretch: 85%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-size: max(8.5px, min(clamp(9px, calc(3px + 20cqw), 15px), calc(80cqh / var(--largo-titulo))));
+}
+
+.lomo-cara--mono .lomo-cara__titulo {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-size: max(8px, min(clamp(8.5px, calc(3px + 18cqw), 13px), calc(78cqh / var(--largo-titulo))));
+}
+
+/* Lomos muy finos (revistas, plaquettes): solo el título, como en la realidad. */
+@container (max-width: 21px) {
+  .lomo-cara__autor,
+  .lomo-cara__sello {
+    display: none;
+  }
+}
+
+/* ---------- Estilos de encuadernación ---------- */
+
+/* Tela: trama fina sobre el color (los oscuros llevan título dorado). */
+.lomo-cara--tela {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
+}
+
+/* Banda: un bloque de color en la cabeza del lomo. */
+.lomo-cara--banda {
+  background-image: linear-gradient(180deg, var(--banda) 0 15%, transparent 15%);
+}
+
+/* el texto empieza debajo de la banda (cqh: alto del propio lomo) */
+.lomo-cara--banda .lomo-cara__textos {
+  margin-top: calc(15cqh - 4px);
+}
+
+/* Filete: dos líneas finas en cabeza y pie. */
+.lomo-cara--filete {
+  background-image:
+    linear-gradient(var(--tinta), var(--tinta)),
+    linear-gradient(var(--tinta), var(--tinta));
+  background-size: 62% 1px, 62% 1px;
+  background-position: center 9px, center calc(100% - 30px);
+  background-repeat: no-repeat;
+}
+
+.lomo-cara__autor {
+  margin-top: 12px;
+  font-family: var(--ed-sans);
+  font-size: max(6.5px, min(clamp(7px, calc(2.5px + 12cqw), 10px), calc(36cqh / var(--largo-autor))));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento);
+  opacity: 0.85;
+}
+
+.lomo-cara__sello {
+  flex: none;
+  margin-top: auto;
+  padding-top: 10px;
+  font-family: var(--ed-serif);
+  font-size: clamp(10px, calc(4px + 16cqw), 14px);
+  line-height: 1;
+  opacity: 0.8;
+}
+
+/* ---------- Portada tipográfica (libros sin imagen) ---------- */
+
+.portada-tipo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 12% 11% 9%;
+  background: var(--fondo);
+  color: var(--tinta);
+  container-type: inline-size;
+}
+
+.portada-tipo p {
+  margin: 0;
+}
+
+.portada-tipo__autor {
+  font-family: var(--ed-sans);
+  font-size: clamp(9px, 4.2cqw, 15px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.portada-tipo__titulo {
+  margin-top: 0.6em !important;
+  font-family: var(--ed-serif);
+  font-size: clamp(18px, 12cqw, 52px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.portada-tipo__pie {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.75em;
+}
+
+.portada-tipo__sello {
+  font-family: var(--ed-serif);
+  font-size: clamp(9px, 4cqw, 14px);
+  font-style: italic;
+  line-height: 1.15;
+  opacity: 0.85;
+}
+
+/* Rótulo honesto: la portada es una representación, no la oficial. */
+.portada-tipo__provisional {
+  flex: none;
+  margin-left: auto !important;
+  padding: 0.25em 0.55em;
+  border: 1px solid currentColor;
+  font-family: var(--ed-sans);
+  font-size: clamp(6.5px, 2.6cqw, 9px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   LIBRO ABIERTO — capa superpuesta sobre el mismo estante
+   ========================================================= */
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  pointer-events: none;
+}
+
+/* Velo claro: el estante sigue visible detrás, apenas atenuado. */
+.lb__fondo {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  background: color-mix(in srgb, var(--ed-fondo) 70%, transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.lb:is([data-fase="extrayendo"], [data-fase="girando"], [data-fase="abriendo"], [data-fase="abierto"], [data-fase="cerrando"])
+  .lb__fondo {
+  opacity: 1;
+}
+
+.lb[data-fase="regresando"] .lb__fondo {
+  transition-duration: 0.9s;
+}
+
+/* Debajo de la barra de navegación y del índice de categorías, para no superponerse. */
+.lb__cerrar {
+  position: absolute;
+  top: 120px;
+  right: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.2rem;
+  border: 0;
+  background: none;
+  color: var(--ed-tinta);
+  font-family: var(--ed-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lb__cerrar span {
+  font-size: 1.35rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.lb__cerrar:focus-visible {
+  outline: 2px solid var(--ed-oliva);
+  outline-offset: 3px;
+}
+
+.lb:is([data-fase="abriendo"], [data-fase="abierto"]) .lb__cerrar {
+  opacity: 1;
+}
+
+.lb__escena {
+  position: absolute;
+  inset: 0;
+  perspective: 2200px;
+  perspective-origin: 50% 50%;
+  pointer-events: none;
+}
+
+.lb__libro {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+/* ---------- Caras de la caja ---------- */
+
+.lb-cara {
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.lb-cara--contratapa {
+  inset: 0;
+  background: var(--base);
+  border-radius: 2px;
+  transform: translateZ(calc(var(--D) / -2)) rotateY(180deg);
+}
+
+.lb-cara--lomo {
+  left: 0;
+  top: 0;
+  width: var(--D);
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  transform: translateX(calc(var(--D) / -2)) rotateY(-90deg);
+}
+
+.lb-cara__lomo-escala {
+  transform-origin: 0 0;
+  border-radius: 1.5px;
+}
+
+/* Cantos de las páginas: levemente hundidos respecto de las tapas. */
+.lb-cara--canto,
+.lb-cara--cabeza,
+.lb-cara--pie {
+  background-color: #f1ede4;
+}
+
+.lb-cara--canto {
+  top: 3px;
+  left: calc(100% - var(--D) / 2 - 3px);
+  width: var(--D);
+  height: calc(100% - 6px);
+  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
+  transform: rotateY(90deg);
+}
+
+.lb-cara--cabeza,
+.lb-cara--pie {
+  left: 0;
+  width: calc(100% - 3px);
+  height: var(--D);
+  background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
+}
+
+.lb-cara--cabeza {
+  top: calc(3px - var(--D) / 2);
+  transform: rotateX(90deg);
+}
+
+.lb-cara--pie {
+  top: calc(100% - 3px - var(--D) / 2);
+  transform: rotateX(-90deg);
+}
+
+/* ---------- Tapa y páginas ---------- */
+
+.lb-tapa {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+}
+
+.lb-tapa__frente {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 1px 3px 3px 1px;
+  background: var(--base);
+  backface-visibility: hidden;
+  box-shadow: 0 30px 50px -28px rgba(0, 0, 0, 0.35);
+}
+
+/* Bisagra de la tapa cerca del lomo */
+.lb-tapa__frente::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.22) 0,
+    rgba(255, 255, 255, 0.12) 1.6%,
+    rgba(0, 0, 0, 0.08) 3%,
+    rgba(0, 0, 0, 0) 6%
+  );
+}
+
+.lb-tapa__imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lb-pagina {
+  background: var(--ed-papel);
+}
+
+.lb-tapa__dorso {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 3px 1px 1px 3px;
+  /* pliegue hacia el lomo (queda a la derecha al abrirse) */
+  background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.12) 0, rgba(0, 0, 0, 0.03) 4%, rgba(0, 0, 0, 0) 9%);
+  box-shadow: 0 40px 60px -36px rgba(0, 0, 0, 0.32);
+}
+
+.lb-pagina--der {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  right: 4px;
+  overflow: hidden;
+  border-radius: 1px 3px 3px 1px;
+  backface-visibility: hidden;
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0, rgba(0, 0, 0, 0.03) 4%, rgba(0, 0, 0, 0) 9%);
+  box-shadow: 0 40px 60px -36px rgba(0, 0, 0, 0.32);
+  transform: translateZ(calc(var(--D) / 2 - 2px));
+}
+
+/* Página izquierda: la portada como lámina, respetando su proporción */
+.lb-lamina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  padding: 7% 8% 7% 7%;
+}
+
+.lb-lamina__imagen {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.45);
+}
+
+.lb-lamina__tipo {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  max-height: calc(100% - 2.5rem);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.45);
+}
+
+.lb-lamina__nota {
+  margin-top: 1rem;
+  font-family: var(--ed-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ed-gris);
+  text-align: center;
+}
+
+/* ---------- Ficha (página derecha) ----------
+   Papel crema, título en marrón, detalles en oliva, metadatos en topo.
+   Lectura cómoda: serif a 1,08rem con interlineado amplio. */
+
+.lb-info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: 11% 11% 8% 13%;
+  color: var(--ed-tinta);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  overscroll-behavior: contain;
+}
+
+.lb[data-fase="abierto"] .lb-info {
+  opacity: 1;
+  transition-duration: 0.3s;
+}
+
+.lb-info p {
+  margin: 0;
+}
+
+.lb-info__miniatura {
+  width: 64px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 18px -10px rgba(51, 39, 31, 0.5);
+}
+
+.lb-info__volanta {
+  min-height: 1.1em;
+  font-family: var(--ed-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ed-oliva);
+}
+
+.lb-info__titulo {
+  margin: 0.8rem 0 0.55rem;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--ed-marron);
+}
+
+.lb-info__autor {
+  font-family: var(--ed-serif);
+  font-size: 1.18rem;
+  font-style: italic;
+  color: var(--ed-gris);
+}
+
+.lb-info__descripcion {
+  margin-top: 1.5rem !important;
+  max-width: 34em;
+  font-family: var(--ed-serif);
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--ed-tinta);
+}
+
+.lb-info__datos {
+  margin: 1.9rem 0 0;
+  border-top: 1px solid var(--ed-linea);
+}
+
+.lb-info__datos > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--ed-linea);
+}
+
+.lb-info__datos dt {
+  font-family: var(--ed-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ed-gris);
+  align-self: center;
+}
+
+.lb-info__datos dd {
+  margin: 0;
+  font-family: var(--ed-serif);
+  font-size: 1.02rem;
+  line-height: 1.45;
+  text-align: right;
+  color: var(--ed-tinta);
+}
+
+.lb-info__agotado {
+  color: #8a3f2c; /* ladrillo apagado, 7:1 sobre el papel */
+}
+
+.lb-info__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2.1rem;
+}
+
+.lb-info__megusta,
+.lb-info__volver {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--ed-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lb-info__megusta {
+  min-height: 42px;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--ed-oliva);
+  border-radius: 999px;
+  color: var(--ed-oliva-oscuro);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.lb-info__megusta:hover {
+  background: color-mix(in srgb, var(--ed-oliva) 10%, transparent);
+}
+
+.lb-info__megusta[aria-pressed="true"] {
+  background: var(--ed-oliva);
+  color: var(--ed-papel);
+}
+
+.lb-info__enlace {
+  color: var(--ed-marron);
+  font-family: var(--ed-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+.lb-info__volver {
+  margin-top: auto;
+  padding-top: 2rem;
+  align-self: flex-start;
+  color: var(--ed-gris);
+}
+
+.lb-info__volver:hover,
+.lb-info__enlace:hover {
+  color: var(--ed-oliva-oscuro);
+}
+
+.lb-info :focus-visible {
+  outline: 2px solid var(--ed-oliva);
+  outline-offset: 3px;
+}
+
+/* ---------- Movimiento reducido: sin 3D, fundido corto ---------- */
+
+.lb--reducido .lb__escena {
+  animation: lb-aparecer 0.24s ease both;
+}
+
+.lb--reducido[data-fase="regresando"] .lb__escena {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+@keyframes lb-aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lomo,
+  .lb__fondo,
+  .lb-info {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (min-width: 1200px) {
+  .estante {
+    --u: 1.25;
+  }
+}
+
+/* En pantallas chicas se afinan los lomos pero se mantiene el alto: los títulos siguen entrando. */
+@media (max-width: 767px) {
+  .estante__hueco {
+    width: calc(var(--grosor) * 0.96px);
+    height: calc(var(--alto) * 1.06px);
+  }
+
+  .estante__pista {
+    padding-top: 28px;
+  }
+
+  .lb__cerrar {
+    top: 112px;
+    right: 16px;
+  }
+
+  .lb-info {
+    padding: 8% 8% 6% 10%;
+  }
+
+  .lb-info__miniatura {
+    width: 52px;
+    margin-bottom: 1rem;
+  }
+
+  .lb-info__titulo {
+    margin-top: 0.6rem;
+    font-size: 1.75rem;
+  }
+
+  .lb-info__datos {
+    margin-top: 1.4rem;
+  }
+
+  .lb-info__datos > div {
+    padding: 0.55rem 0;
+  }
+
+  .lb-info__acciones {
+    margin-top: 1.4rem;
+  }
+
+  .lb-info__volver {
+    padding-top: 1.4rem;
+  }
+}

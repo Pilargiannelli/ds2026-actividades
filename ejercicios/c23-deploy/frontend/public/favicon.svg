@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Marea: una luna sobre dos olas, rosa empolvado sobre el marrón del header -->
+  <rect width="48" height="48" rx="11" fill="#4a2f18"/>
+  <g transform="translate(4 4)" fill="none" stroke="#F3C6C8" stroke-width="2.8" stroke-linecap="round">
+    <circle cx="20" cy="15" r="8" fill="#F3C6C8" stroke="none"/>
+    <path d="M3 24.5c4.25 0 4.25-3.5 8.5-3.5s4.25 3.5 8.5 3.5 4.25-3.5 8.5-3.5 4.25 3.5 8.5 3.5"/>
+    <path d="M3 31.5c4.25 0 4.25-3.5 8.5-3.5s4.25 3.5 8.5 3.5 4.25-3.5 8.5-3.5 4.25 3.5 8.5 3.5" opacity="0.55"/>
+  </g>
+</svg>
