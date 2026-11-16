@@ -5,8 +5,8 @@ Es la Libreria de las actividades anteriores (C21) puesta en produccion con
 
 | | URL |
 |---|---|
-| Front | _(completar cuando este deployado)_ |
-| Back | _(completar cuando este deployado)_ |
+| Front | https://marea-hhop.onrender.com |
+| Back | https://marea-api-hmva.onrender.com/api |
 
 > Los usuarios de prueba no van aca: se pasan por el canal del grupo.
 
