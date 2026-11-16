@@ -127,13 +127,3 @@ es un error.
 Cada push a `main` que toque `backend/` o `frontend/` vuelve a buildear y
 publicar ese servicio. Si el build o una migracion fallan, sigue andando la
 version anterior.
-
-## Problemas que tuve
-
-| Sintoma | Causa | Arreglo |
-|---|---|---|
-| El repo no aparecia en Render | la app de Render en GitHub no tenia acceso a ese repo | GitHub > Settings > Applications > Render > Configure, y agregar el repo |
-| No encontraba "Dockerfile Path" | esta escondido en **Advanced**, al final del formulario | completarlo ahi con `./Dockerfile.prod` |
-| Log: `The datasource.url property is required` | las variables del formulario de creacion no se guardaron | cargarlas de nuevo en **Environment** y redeployar |
-| El front no podia llamar a la API (CORS) | `FRONTEND_URL` no coincidia exacto con la URL del front | escribirla a mano, sin `/` final ni espacios |
-| PowerShell: `no se reconoce como nombre de un cmdlet` | la cadena iba sin comillas | `$env:DATABASE_URL = "..."` |
